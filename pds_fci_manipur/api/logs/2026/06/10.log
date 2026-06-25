@@ -1,0 +1,38 @@
+[2026-06-10 10:26:30] User -> DCP added ->Fci@pds| Requested JSON -> {"name":"Yavatmal yass","type":"rr","latitude":"74","longitude":"55","district":"Anjaw","id":"Fci@pds","demand":"5000"}
+[2026-06-10 10:37:21] User -> DCP added ->Fci@pds| Requested JSON -> {"name":"Yavatmal yass","type":"rr","latitude":"74","longitude":"25","district":"Anjaw","id":"Fci@pds","demand":"677"}
+[2026-06-10 13:53:22] User -> DCP deleted -> fci2@pds| Requested JSON -> {"uid":"all"} | all
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FSD Khupa
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI/FSD
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI Seppa
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FSD, Tezu
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FSD/FCI GODOWN
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FSD, Manipolyang
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI Deomali
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI Godown
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI/FSD, Bhalukpung
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI/FSD, Jamiri
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI
+[2026-06-10 13:54:50] User -> DCP Added -> fci2@pds| FCI Godown
+[2026-06-10 22:30:53] User -> DCP deleted -> fci@pds| Requested JSON -> {"uid":"all"} | all
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Sangaiprou
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Ukhrul
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Jiribam
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Senapati
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Thoubal
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Sawombung
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Churachandpur
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD Bishnupur
+[2026-06-10 22:36:56] User -> DCP Added -> fci@pds| FCI, FSD-Tamenglong
+[2026-06-10 22:37:23] User -> DCP deleted -> fci@pds| Requested JSON -> {"uid":"all"} | all
+[2026-06-10 22:37:53] User -> DCP Added -> fci@pds| FCI, FSD Sangaiprou
+[2026-06-10 22:37:53] User -> DCP Added -> fci@pds| FCI, FSD Ukhrul
+[2026-06-10 22:37:54] User -> DCP Added -> fci@pds| FCI, FSD Jiribam
+[2026-06-10 22:37:54] User -> DCP Added -> fci@pds| FCI, FSD Senapati
+[2026-06-10 22:37:54] User -> DCP Added -> fci@pds| FCI, FSD Thoubal
+[2026-06-10 22:37:54] User -> DCP Added -> fci@pds| FCI, FSD Sawombung
+[2026-06-10 22:37:54] User -> DCP Added -> fci@pds| FCI, FSD Churachandpur
+[2026-06-10 22:37:54] User -> DCP Added -> fci@pds| FCI, FSD Bishnupur
+[2026-06-10 22:37:54] User -> DCP Added -> fci@pds| FCI, FSD-Tamenglong

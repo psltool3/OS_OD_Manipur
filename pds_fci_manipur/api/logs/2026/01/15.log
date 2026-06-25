@@ -1,0 +1,33 @@
+[2026-01-15 14:12:59] User -> DCP added ->Fci@pds| Requested JSON -> {"name":"Yavatmal yass","type":"rr","latitude":"74","longitude":"25","district":"Bandipora","id":"888","demand":"677","demand_rice":"5566"}
+[2026-01-15 15:18:34] User -> DCP added ->Fci@pds| Requested JSON -> {"name":"Yavatmal yass","type":"rr","latitude":"74","longitude":"55","district":"Ganderbal","id":"admin@pds","demand":"677","demand_rice":"5566"}
+[2026-01-15 15:40:02] User -> DCP added ->Fci@pds| Requested JSON -> {"name":"Kkkkkkk","type":"rr","latitude":"74","longitude":"25","district":"Bandipora","id":"999","demand":"677","demand_rice":"5566"}
+[2026-01-15 15:44:31] User -> DCP deleted -> Fci@pds| Requested JSON -> {"uid":"all"} | all
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| PQR MILL
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| Pqr
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| Yavatmal yass
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| Yavatmal yass
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| Yavatmal yass
+[2026-01-15 15:44:59] User -> DCP Added -> Fci@pds| Kkkkkkk
+[2026-01-15 15:55:24] User -> DCP added ->Fci@pds| Requested JSON -> {"name":"gfhg","type":"gfgh","latitude":"34.17","longitude":"11","district":"Bandipora","id":"099","demand":"564564","demand_rice":"4566"}
+[2026-01-15 15:57:20] User -> DCP Edit ->Fci@pds| Requested JSON -> {"name":"Yavatmal yassfvdf","uniqueid":"DCP_6968be2316d","active":"1","type":"rr","latitude":"74","longitude":"25","district":"Bandipora","id":"888","demand":"677","demand_rice":"5566"}
+[2026-01-15 16:10:38] User -> DCP added ->Fci@pds| Requested JSON -> {"name":"Yavatmal yass","type":"rr","latitude":"74","longitude":"25","district":"Kurung Kumey","id":"88","demand":"677","demand_rice":"5566"}
+[2026-01-15 16:10:57] User -> DCP InActive -> Fci@pds| Yavatmal yass
+[2026-01-15 16:11:00] User -> DCP Active -> Fci@pds| Yavatmal yass
+[2026-01-15 16:11:09] User -> DCP InActive -> Fci@pds| Yavatmal yass
+[2026-01-15 16:11:14] User -> DCP Active -> Fci@pds| Yavatmal yass

@@ -1,0 +1,4 @@
+[2026-01-13 16:37:01] User -> DCP InActive -> fci@pds| Pqr Millv
+[2026-01-13 16:37:02] User -> DCP Active -> fci@pds| Pqr Millv
+[2026-01-13 16:37:18] User -> DCP Edit ->fci@pds| Requested JSON -> {"name":"Pqr","uniqueid":"DCP_6728d0910bb","active":"1","type":"Mill","latitude":"34.17","longitude":"74.66","district":"Bandipora","id":"Mill06","demand":"1000000","demand_rice":"1000000"}
+[2026-01-13 16:37:25] User -> DCP deleted -> fci@pds| Requested JSON -> {"uid":"DCP_6943bd8c4d2"} | ggr

@@ -1,0 +1,19 @@
+[2026-06-10 22:23:43] User -> Warehouse deleted -> admin@pds| Requested JSON -> {"uid":"all"} | all
+[2026-06-10 22:24:19] User -> Warehouse Added -> admin@pds| FSD CAF AND PD SANGAIPROU
+[2026-06-10 22:24:19] User -> Warehouse Added -> admin@pds| FSD CAF AND PD TWO
+[2026-06-10 22:24:19] User -> Warehouse Added -> admin@pds| CAFANDPD SANGAIPROU
+[2026-06-10 22:24:19] User -> Warehouse Added -> admin@pds| FSD SAWOMBUNG
+[2026-06-10 22:24:19] User -> Warehouse Added -> admin@pds| POROMPAT GODOWN
+[2026-06-10 22:24:19] User -> Warehouse Added -> admin@pds| KOIRENGEI GODOWN
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| Multipurpose Hall,DC Complex (MPH)
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| CAF&PD THOUBAL GODOWN
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| CAFANDPD JIRIBAM GODOWN
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| CAF&PD GODOWN
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| PDC KANGPOKPI
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| Mini secretariat hall
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| PDC CHANDEL
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| FCS, TML HQ
+[2026-06-10 22:24:20] User -> Warehouse Added -> admin@pds| FSD, CHURACHANDPUR
+[2026-06-10 22:25:19] User -> User Add ->admin@pds| Requested JSON -> {"newusername":"fci1@pds","district":"fci","newpassword":"Fci@123"} | fci1@pds
+[2026-06-10 22:27:47] User -> Delete User ->admin@pds| Requested JSON -> {"uid":"6a2996f7a0835"} | fci1@pds
+[2026-06-10 22:28:48] User -> User Add ->admin@pds| Requested JSON -> {"newusername":"fci@pds","district":"fci","newpassword":"Fci@123"} | fci@pds

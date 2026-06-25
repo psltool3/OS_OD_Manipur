@@ -1,0 +1,11 @@
+[2025-12-26 12:26:58] User -> District added ->admin@pds| Requested JSON -> {"name":"new"}
+[2025-12-26 12:27:31] User -> District Name Edit->admin@pds| Requested JSON -> {"name":"Newabc","uid":"694e31baa5b0e"}
+[2025-12-26 12:30:16] User -> District deleted -> admin@pds| Requested JSON -> {"uid":"694e31baa5b0e"} | 
+[2025-12-26 12:31:18] User -> Warehouse added ->admin@pds| Requested JSON -> {"name":"sveg","type":"motorable","latitude":"55","storage":"2500","district":"Anantnag","id":"88","warehousetype":"swc","longitude":"50"}
+[2025-12-26 12:32:32] User -> Warehouse deleted -> admin@pds| Requested JSON -> {"uid":"all"} | 
+[2025-12-26 12:33:10] User -> Warehouse deleted -> admin@pds| Requested JSON -> {"uid":"WH_694e331f1cdb"} | 
+[2025-12-26 12:33:35] User -> Warehouse Edit ->admin@pds| Requested JSON -> {"name":"ABC Depotii","uniqueid":"WH_694e331f1d76","active":"1","type":"motorable","latitude":"33.67623","storage":"5000","district":"Anantnag","id":"106004","warehousetype":"swc","longitude":"75.22071"}
+[2025-12-26 12:36:06] User -> FPS deleted -> admin@pds| Requested JSON -> {"uid":"all"} | 
+[2025-12-26 12:44:04] User -> FPS deleted -> admin@pds| Requested JSON -> {"uid":"FPS_694e348ad50"} | 
+[2025-12-26 12:45:56] User -> FPS deleted -> admin@pds| Requested JSON -> {"uid":"FPS_694e360c863"} | 
+[2025-12-26 12:46:50] User -> Delete User ->admin@pds| Requested JSON -> {"uid":"67a89fd9db566"} | Udhampur@pds
