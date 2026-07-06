@@ -286,7 +286,7 @@ if($currentTimestamp >= $targetTimestamp) {
 										
 										</table>
 										</div>
-										<input type="hidden" id="district" name="district" value="<?php echo $district ?>" />
+										<input type="hidden" id="district_hidden" name="district" value="<?php echo $district ?>" />
 										<?php
 										if($expired==0){
 											echo "<button class='btn btn-info pull-right' onClick='acceptAll()' type='button' style='margin-left:10px;'>Accept All</button><button class='btn btn-primary pull-right' onClick='sendData()' type='button'>Save</button>";
@@ -533,6 +533,7 @@ if($currentTimestamp >= $targetTimestamp) {
 		
 		function fetchDataFromServer(){
 			var approved = document.getElementById("approved").value;
+			var district = document.getElementById("district").value;
 			var dataStringFromId = 'approved='+ approved
 			$.ajax({
 				type: "POST",
