@@ -20,11 +20,11 @@ $query = "SELECT to_district FROM ". $tablename ." WHERE 1";
 $result = mysqli_query($con,$query);
 $totalids = mysqli_num_rows($result);
 
-$query = "SELECT approve_district FROM ". $tablename ." WHERE approve_district='yes'";
+$query = "SELECT approve_admin FROM ". $tablename ." WHERE approve_admin='yes' OR approve_admin='no'";
 $result = mysqli_query($con,$query);
 $totalidsreviewed = mysqli_num_rows($result);
 
-$query = "SELECT new_id_district FROM ". $tablename ." WHERE new_id_district<>''";
+$query = "SELECT new_id_admin FROM ". $tablename ." WHERE new_id_admin<>''";
 $result = mysqli_query($con,$query);
 $totalidsrequested = mysqli_num_rows($result);
 
@@ -176,7 +176,7 @@ if($currentTimestamp >= $targetTimestamp) {
 									<div class="card h-100"
 										style="background-color:#FFC167; color:white; padding:20px; font-weight: bold;">
 										<div style="font-size:25px"><?php echo $totalidsrequested; ?></div>
-										<div style="font-size:15px">TOTAl TAGS CHANGED</div>
+										<div style="font-size:15px">TOTAL TAGS CHANGED</div>
 									</div>
 								</div>
 								<div class="col-md-3 mb-4">

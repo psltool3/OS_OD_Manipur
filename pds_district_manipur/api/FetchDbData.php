@@ -24,6 +24,9 @@ $reviewed = "";
 $approved = "";
 $from_id = "";
 $to_id = "";
+$data = array();
+$warehouse = array();
+
 
 if(isset($_POST['fromid'])){
 	$from_id = $_POST['fromid'];

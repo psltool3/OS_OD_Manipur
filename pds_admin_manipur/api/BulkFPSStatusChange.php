@@ -56,6 +56,10 @@ if(password_verify($person->getPassword(), $dbHashedPassword)){
         $query = "UPDATE fps SET active=? WHERE district=? AND type='Normal FPS'";
         writeLog("User -> Normal FPS $action -> " . $_SESSION['user'] . " | " . $district);
     }
+    
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $activeValue, $district);
+    mysqli_stmt_execute($stmt);
         
     echo "<script>window.location.href = '../FPS.php';</script>";
 } 

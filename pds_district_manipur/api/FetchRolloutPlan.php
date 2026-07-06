@@ -22,6 +22,7 @@ $district = $_SESSION['district_district'];
 
 $status = $_POST['status'];
 $data = array();
+$resultarray = array();
 $query = "SHOW TABLES LIKE '$tablename'";
 $result = $con->query($query);
 
