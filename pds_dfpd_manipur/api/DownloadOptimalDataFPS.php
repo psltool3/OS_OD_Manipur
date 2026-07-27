@@ -7,12 +7,14 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
-// Check if format is specified in GET request
 if (isset($_GET['format'])) {
     $format = $_GET['format'];
     
-    $columns = ["district","name","id","type","latitude","longitude","demand"];
     $tablename = $_GET['tableName'];
+    $columns = ["district","name","id","type","latitude","longitude","demand"];
+    if (strpos($tablename, 'fci_leg1_') === 0) {
+        $columns = ["district","name","id","type","latitude","longitude","storage"];
+    }
 	$tableData = array();
     array_push($tableData,$columns);
 

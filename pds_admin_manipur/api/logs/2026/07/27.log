@@ -1,0 +1,27 @@
+[2026-07-27 11:10:57] User -> Save Data | approve admin change yes ->admin@pds| 14608337 - 127500300206 - FRice
+[2026-07-27 11:11:03] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:12:01] User -> Save Data | approve admin change yes ->admin@pds| 14608337 - 127500300206 - FRice
+[2026-07-27 11:16:05] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:16:51] User -> Save Data | approve admin change yes ->admin@pds| 14608337 - 127500300206 - FRice
+[2026-07-27 11:17:10] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:21:49] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500300206| 14608074
+[2026-07-27 11:24:25] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:41:38] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500300206| 14608331
+[2026-07-27 11:42:06] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:42:28] User -> Save Data | approve admin change yes ->admin@pds| 14608337 - 127500300206 - FRice
+[2026-07-27 11:42:45] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:43:38] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500300206| 14608336
+[2026-07-27 11:45:54] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:46:27] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500300206| 14608339
+[2026-07-27 11:46:56] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:50:58] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500100088| FF12006
+[2026-07-27 11:52:30] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500100088 - FRice
+[2026-07-27 11:53:01] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500300206| 14608338
+[2026-07-27 11:53:24] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-27 11:54:55] User -> Save Data | approve admin change yes ->admin@pds| 14608337 - 127500300206 - FRice
+[2026-07-27 12:23:37] User -> Delete User ->admin@pds| Requested JSON -> {"uid":"6a4613e0cffd1"} | dfpd@pds
+[2026-07-27 12:26:11] User -> User Add ->admin@pds| Requested JSON -> {"newusername":"dfpd@pds","district":"dfpd","newpassword":"Dfpd@123"} | dfpd@pds
+[2026-07-27 12:40:45] User -> Delete User ->admin@pds| Requested JSON -> {"uid":"6a462c96206a2"} | fci@pds
+[2026-07-27 12:41:17] User -> User Add ->admin@pds| Requested JSON -> {"newusername":"fci@pds","district":"fci","newpassword":"Fci@123"} | fci@pds
+[2026-07-27 13:51:43] User -> Warehouse added ->admin@pds| Requested JSON -> {"name":"Akshay","type":"motorable","latitude":"11","storage":"0","district":"Bishnupur","id":"900","warehousetype":"swc","longitude":"78"}
+[2026-07-27 13:51:52] User -> Warehouse deleted -> admin@pds| Requested JSON -> {"uid":"WH_6a6715171274"} | Akshay

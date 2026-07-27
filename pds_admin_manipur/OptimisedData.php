@@ -294,6 +294,7 @@ while($row = mysqli_fetch_array($result))
 										<th style="font-size:16px">Reason for not Approve</th>
 										<th style="font-size:16px">Suggest Warehouse</th>
 										<th style="font-size:16px">Suggested Warehouse Distance (Km)</th>
+										<th style="font-size:16px">Action</th>
 									</tr>
                                  </thead>
 								<tbody id="table_body">
@@ -524,6 +525,12 @@ while($row = mysqli_fetch_array($result))
 		
 		function handleDistanceChange(selectedId){
 			newvalue = document.getElementById(selectedId).value;
+			if (newvalue !== '' && (isNaN(newvalue) || parseFloat(newvalue) < 0)) {
+				alert("Distance must be a numeric value greater than or equal to 0.");
+				document.getElementById(selectedId).value = '';
+				delete modifiedDistanceData[selectedId];
+				return;
+			}
 			modifiedDistanceData[selectedId] = newvalue;
 			if(newvalue==''){
 				delete modifiedDistanceData[selectedId];
@@ -556,6 +563,11 @@ while($row = mysqli_fetch_array($result))
 						}
 						if(!modifiedDistanceData.hasOwnProperty(key + "_iddistance")){
 							alert("New Id " + String(value) + " distance needs to be filled");
+							return;
+						}
+						var distVal = modifiedDistanceData[key + "_iddistance"];
+						if (isNaN(distVal) || parseFloat(distVal) < 0) {
+							alert("Distance must be a numeric value greater than or equal to 0.");
 							return;
 						}
 					}
@@ -725,7 +737,7 @@ while($row = mysqli_fetch_array($result))
 								}
 								
 								if(distance_admin==null || distance_admin==""){
-									var distance_admin_part = "<td><input type='text' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
+									var distance_admin_part = "<td><input type='number' step='any' min='0' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
 								}
 								else{
 									var distance_admin_part = "<td>" + distance_admin + "</td>"
@@ -737,8 +749,12 @@ while($row = mysqli_fetch_array($result))
 								else{
 									var newid_admin_part = "<td><select class='form-control' onchange='handleNewIdChange(\"" + uniqueid + "\")' id='" + uniqueid + "' name='" + uniqueid + "' disabled required><option value=''>Select Id</option>" + warehousepart + "</select></td>";
 								}
+								var isLocked = (approve_admin == "yes" || approve_admin == "no" || district_change_approve == "yes" || district_change_approve == "no") ? "disabled" : "";
+								var save_btn = "<button class='btn btn-primary' " + isLocked + " onClick='saveRowData(\"" + uniqueid + "\")' style='margin-right:5px;'>Save</button>";
+								var reset_btn = "<button class='btn btn-warning' onClick='resetRowData(\"" + uniqueid + "\", \"" + obj[datafield]["from_id"] + "\", \"" + obj[datafield]["to_id"] + "\", \"" + obj[datafield]["commodity"] + "\")'>Reset</button>";
+								var action_btn = "<td>" + save_btn + reset_btn + "</td>";
 								if(approve_district==""){
-									subpart1 = subpart1 + "<td>" + newid_district + "</td><td>" + reason_district + "</td><td>" + distance_district  + approve_district_part + "</td><td></td><td></td><td></td><td></td></tr>";
+									subpart1 = subpart1 + "<td>" + newid_district + "</td><td>" + reason_district + "</td><td>" + distance_district  + approve_district_part + "</td><td></td><td></td><td></td><td></td>" + action_btn + "</tr>";
 								}
 								else{
 									if(approve_admin=="yes"){
@@ -751,7 +767,7 @@ while($row = mysqli_fetch_array($result))
 										var approve_admin_part = "<td><select class='form-control' onchange='enableDisable(\"" + uniqueid + "\")' id='" + uniqueid_bool + "' name='" + uniqueid_bool + "' required><option value=''>Select</option><option value='yes'>Approve District</option><option value='same'>Keep System Generated</option><option value='no'>Change ID</option></select></td>";
 										uniqueid_array.push(uniqueid_bool);
 									}
-									subpart1 = subpart1 + "<td>" + newid_district + "</td><td>" + reason_district + "</td><td>" + distance_district + approve_district_part + approve_admin_part + admin_reason + newid_admin_part + distance_admin_part + "</tr>";
+									subpart1 = subpart1 + "<td>" + newid_district + "</td><td>" + reason_district + "</td><td>" + distance_district + approve_district_part + approve_admin_part + admin_reason + newid_admin_part + distance_admin_part + action_btn + "</tr>";
 								}
 								$('#table_body').append(subpart1);
 							}
@@ -977,7 +993,116 @@ while($row = mysqli_fetch_array($result))
 			}
 		});
 		
-		
+		function resetRowData(uniqueid, from_id, to_id, commodity) {
+			if (confirm("Are you sure you want to reset this row's data?")) {
+				// Remove from local modified data arrays
+				delete modifiedData[uniqueid];
+				delete modifiedReasonData[uniqueid + "_idreason"];
+				delete modifiedDistanceData[uniqueid + "_iddistance"];
+				delete modifiedIdData[uniqueid];
+				delete modifiedApproveData[uniqueid];
+				
+				// Post to API to reset in database
+				$.ajax({
+					type: "POST",
+					url: "api/ResetRowData.php",
+					data: {
+						from_id: from_id,
+						to_id: to_id,
+						commodity: commodity
+					},
+					cache: false,
+					success: function(response) {
+						try {
+							var res = JSON.parse(response);
+							if (res.status === "success") {
+								// Refresh the table data
+								fetchDataFromServerId();
+							} else {
+								alert("Error resetting data: " + res.message);
+							}
+						} catch (e) {
+							// Fallback
+							fetchDataFromServerId();
+						}
+					},
+					error: function() {
+						alert("Failed to reset data. Please check your connection.");
+					}
+				});
+			}
+		}
+
+		function saveRowData(uniqueid) {
+			var hasChanges = false;
+			var params = {};
+			
+			// 1. Check uniqueid (approve/change option from manual change) or uniqueid_bool (from acceptAll)
+			var val = undefined;
+			var valKey = undefined;
+			if (modifiedData.hasOwnProperty(uniqueid)) {
+				val = modifiedData[uniqueid];
+				valKey = uniqueid;
+			} else if (modifiedData.hasOwnProperty(uniqueid + "_bool")) {
+				val = modifiedData[uniqueid + "_bool"];
+				valKey = uniqueid + "_bool";
+			}
+			
+			if (val !== undefined) {
+				params[valKey] = val;
+				hasChanges = true;
+				
+				// Validation for Change ID choice
+				if (val === "no") {
+					if (!modifiedIdData.hasOwnProperty(uniqueid)) {
+						alert("New Warehouse ID needs to be selected");
+						return;
+					}
+					if (!modifiedReasonData.hasOwnProperty(uniqueid + "_idreason")) {
+						alert("Reason needs to be selected");
+						return;
+					}
+					if (!modifiedDistanceData.hasOwnProperty(uniqueid + "_iddistance")) {
+						alert("Distance needs to be filled");
+						return;
+					}
+					var distVal = modifiedDistanceData[uniqueid + "_iddistance"];
+					if (isNaN(distVal) || parseFloat(distVal) < 0) {
+						alert("Distance must be a numeric value greater than or equal to 0.");
+						return;
+					}
+				}
+			}
+			
+			// 2. Check uniqueid_approve (district change approve/reject option)
+			var uniqueid_approve = uniqueid + "_approve";
+			if (modifiedApproveData.hasOwnProperty(uniqueid_approve)) {
+				params[uniqueid_approve] = modifiedApproveData[uniqueid_approve];
+				hasChanges = true;
+			}
+			
+			// 3. Add warehouse ID, reason, and distance if changed
+			if (modifiedIdData.hasOwnProperty(uniqueid)) {
+				params[uniqueid] = modifiedIdData[uniqueid];
+				hasChanges = true;
+			}
+			if (modifiedReasonData.hasOwnProperty(uniqueid + "_idreason")) {
+				params[uniqueid + "_idreason"] = modifiedReasonData[uniqueid + "_idreason"];
+				hasChanges = true;
+			}
+			if (modifiedDistanceData.hasOwnProperty(uniqueid + "_iddistance")) {
+				params[uniqueid + "_iddistance"] = modifiedDistanceData[uniqueid + "_iddistance"];
+				hasChanges = true;
+			}
+			
+			if (!hasChanges) {
+				alert("No changes to save for this row.");
+				return;
+			}
+			
+			// Post the single row parameters to SaveData.php
+			post(params, "api/SaveData.php");
+		}
     </script>
     </body>
 </html>

@@ -161,6 +161,9 @@
 					<a href="../SendMessage.php" style="padding-left:0px"><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">Send Message</span></a>
 				</li>
 				<li>
+					<a href="../Manipur_Intra_Route_Manual.pptx" target="_blank" style="padding-left:0px"><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;"> -Manual</span></a>
+				</li>
+				<li>
 					<a href="../Timer.php" style="padding-left:0px"><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">Edit Deadline</span></a>
 				</li>
 				<li style="margin-bottom: 60px;">

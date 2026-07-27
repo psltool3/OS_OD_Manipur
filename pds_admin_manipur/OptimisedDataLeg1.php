@@ -436,6 +436,12 @@ if($currentTimestamp >= $targetTimestamp) {
 		
 		function handleDistanceChange(selectedId){
 			newvalue = document.getElementById(selectedId).value;
+			if (newvalue !== '' && (isNaN(newvalue) || parseFloat(newvalue) < 0)) {
+				alert("Distance must be a numeric value greater than or equal to 0.");
+				document.getElementById(selectedId).value = '';
+				delete modifiedDistanceData[selectedId];
+				return;
+			}
 			modifiedDistanceData[selectedId] = newvalue;
 			if(newvalue==''){
 				delete modifiedDistanceData[selectedId];
@@ -461,6 +467,11 @@ if($currentTimestamp >= $targetTimestamp) {
 						}
 						if(!modifiedDistanceData.hasOwnProperty(key + "_iddistance")){
 							alert("New Id " + String(value) + " distance needs to be filled");
+							return;
+						}
+						var distVal = modifiedDistanceData[key + "_iddistance"];
+						if (isNaN(distVal) || parseFloat(distVal) < 0) {
+							alert("Distance must be a numeric value greater than or equal to 0.");
 							return;
 						}
 					}
@@ -709,7 +720,7 @@ if($currentTimestamp >= $targetTimestamp) {
 								}
 								
 								if(distance_admin==null || distance_admin==""){
-									var newdistance = "<td><input type='text' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
+									var newdistance = "<td><input type='number' min='0' step='any' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
 								}
 								else{
 									var newdistance = "<td>" + distance_admin + "</td>"

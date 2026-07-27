@@ -55,6 +55,9 @@ if(password_verify($person->getPassword(), $dbHashedPassword)){
 		mysqli_close($con);
 		echo "<script>window.location.href = '../Home.php';</script>";
     }
+	else{
+		echo "Error : Only Admin users can login";
+	}
 } 
 else{
     echo "Error : Password or Username is incorrect";

@@ -308,13 +308,18 @@ $totalidsapproved = mysqli_num_rows($result);
 	
 	var modifiedIdData = {};
 	function markReview(selectedId){
+		var element = document.getElementById(selectedId);
 		if(modifiedIdData[selectedId] !== undefined) {
 			delete modifiedIdData[selectedId];
-			document.getElementById(selectedId).className  = "btn btn-info";
+			if (element) {
+				element.className  = "btn btn-info";
+			}
 		}
 		else{
 			modifiedIdData[selectedId] = "yes";
-			document.getElementById(selectedId).className  = "btn btn-danger";
+			if (element) {
+				element.className  = "btn btn-danger";
+			}
 		}
 	}
 	
@@ -326,7 +331,10 @@ $totalidsapproved = mysqli_num_rows($result);
 	
 	function acceptAll(){
 		for (let i = 0; i < uniqueid_bool_array.length; i++) {
-			markReview(uniqueid_bool_array[i]);
+			var id = uniqueid_bool_array[i];
+			if (modifiedIdData[id] === undefined) {
+				markReview(id);
+			}
 		}
 	}
 
@@ -354,6 +362,7 @@ $totalidsapproved = mysqli_num_rows($result);
 						timeout: 59000,
 						success: function(result){
 							$('#table_body').empty();
+							uniqueid_bool_array = [];
 							console.log(result);
 							try{
 								var resultarray = JSON.parse(result);
@@ -367,12 +376,13 @@ $totalidsapproved = mysqli_num_rows($result);
 									var uniqueid = obj[dataField]["from_id"] + "_" + obj[dataField]["to_id"] + "_" + obj[dataField]["commodity"];
 									
 									var status = obj[dataField]["status"];
+									var status_lower = status ? status.toLowerCase() : "";
 									var status_part = "";
-									if(status==null || status==""){
+									if(status_lower=="" || status_lower=="not implemented"){
 										status_part = "<button class='btn btn-info' id=\"" + uniqueid + "\" onClick='markReview(\"" + uniqueid + "\")'>Mark as Implemented</button>"; 
 										uniqueid_bool_array.push(uniqueid);
 									}
-									else if(status=="implemented"){
+									else if(status_lower=="implemented"){
 										status_part = "Already Implemented";
 									}
 									

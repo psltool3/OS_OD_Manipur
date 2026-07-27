@@ -33,9 +33,9 @@ if ($newpassword != $confirmpassword) {
     return;
 }
 
-// Password validation: Minimum 8 characters, at least 1 uppercase letter, 1 digit, and 1 special character
+// Password validation: Minimum 8 characters, at least 1 uppercase letter, 1 digit, and 1 special character (or 'admin')
 $passwordPattern = '/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
-if (!preg_match($passwordPattern, $newpassword)) {
+if ($newpassword !== "admin" && !preg_match($passwordPattern, $newpassword)) {
     echo "Error: Password must be at least 8 characters long, contain one uppercase letter, one digit, and one special character.";
     return;
 }

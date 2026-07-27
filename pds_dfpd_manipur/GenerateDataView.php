@@ -33,6 +33,9 @@ $cost = "";
 $cost1 = "";
 
 $query = "SELECT * FROM optimised_table WHERE id='$id'";
+if(isset($_POST['step']) && $_POST['step']=="leg1"){
+	$query = "SELECT * FROM optimised_table_leg1 WHERE id='$id'";
+}
 $result = mysqli_query($con,$query);
 $numrows = mysqli_num_rows($result);
 if($numrows>0){

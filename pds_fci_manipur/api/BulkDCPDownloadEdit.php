@@ -51,7 +51,13 @@ header('Cache-Control: max-age=0');
 // Render excel data 
 echo $excelDataColumns;
 
-$query = "SELECT * FROM dcp WHERE 1";
+$district = isset($_GET['district']) ? $_GET['district'] : '';
+if ($district !== '' && $district !== 'all') {
+    $query = "SELECT * FROM dcp WHERE district='" . mysqli_real_escape_string($con, $district) . "'";
+} else {
+    $query = "SELECT * FROM dcp WHERE district IN (SELECT name FROM districts)";
+}
+
 $result = mysqli_query($con,$query);
 $numrows = mysqli_num_rows($result);
 if($numrows>0){

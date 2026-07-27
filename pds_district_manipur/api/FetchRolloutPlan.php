@@ -32,7 +32,7 @@ if ($result && $result->num_rows > 0) {
 	$result_implemented = mysqli_query($con,$query_implemented);
 	$count_implemented = mysqli_num_rows($result_implemented);
 	
-	$query_notimplemented = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND status IS NULL";
+	$query_notimplemented = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND (status IS NULL OR status='' OR status='not implemented')";
 	$result_notimplemented = mysqli_query($con,$query_notimplemented);
 	$count_notimplemented = mysqli_num_rows($result_notimplemented);
 	
@@ -41,7 +41,7 @@ if ($result && $result->num_rows > 0) {
 		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND status='implemented'";
 	}
 	else if($status=="not implemented"){
-		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND status IS NULL";
+		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND (status IS NULL OR status='' OR status='not implemented')";
 	}
 	
 	$result = mysqli_query($con,$query);

@@ -5,6 +5,11 @@ require('Header.php');
 
 $id = $_POST['id'];
 $tablename = "fps_".$id;
+$is_leg1 = false;
+if (isset($_POST['step']) && $_POST['step'] == "leg1") {
+    $tablename = "fci_leg1_".$id;
+    $is_leg1 = true;
+}
 
 ?>
 <style>
@@ -21,8 +26,8 @@ $tablename = "fps_".$id;
 
                 <!-- START BREADCRUMB -->
                 <ul class="breadcrumb">
-                    <li><a href="FPS.php">Home</a></li>
-                    <li class="active">FPS View</li>
+                    <li><a href="<?php echo $is_leg1 ? 'OptimisedDataAllLeg1.php' : 'OptimisedDataAll.php'; ?>">Home</a></li>
+                    <li class="active"><?php echo $is_leg1 ? 'FCI View' : 'FPS View'; ?></li>
                 </ul>
                 <!-- END BREADCRUMB -->
 
@@ -36,7 +41,7 @@ $tablename = "fps_".$id;
                             <!-- START SIMPLE DATATABLE -->
                             <div class="panel panel-default">
 							<div class="panel-heading">
-                                    <h3 class="panel-title">FPS</h3>
+                                    <h3 class="panel-title"><?php echo $is_leg1 ? 'FCI' : 'FPS'; ?></h3>
                                 </div>
 								<div style="float:right" style="margin:10px">
 									<button id="downloadCSV" class="btn btn-warning" style="margin-bottom: 10px;" type="button">Download CSV</button>
@@ -48,12 +53,12 @@ $tablename = "fps_".$id;
                                         <thead>
                                             <tr>
 												<th style="font-size:16px">District</th>
-												<th style="font-size:16px">Name of FPS</th>
-												<th style="font-size:16px">FPS ID</th>
-												<th style="font-size:16px">Direct FCI FPS / Normal FPS</th>
+												<th style="font-size:16px"><?php echo $is_leg1 ? 'Name of FCI' : 'Name of FPS'; ?></th>
+												<th style="font-size:16px"><?php echo $is_leg1 ? 'FCI ID' : 'FPS ID'; ?></th>
+												<th style="font-size:16px"><?php echo $is_leg1 ? 'Type' : 'Direct FCI FPS / Normal FPS'; ?></th>
 												<th style="font-size:16px">Latitude</th>
 												<th style="font-size:16px">Longitude</th>
-												<th style="font-size:16px">Demand of FRice (Qtl) </th>
+												<th style="font-size:16px"><?php echo $is_leg1 ? 'Off take of FRice (Qtl)' : 'Demand of FRice (Qtl)'; ?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -64,13 +69,14 @@ $tablename = "fps_".$id;
 										$numrows = mysqli_num_rows($result);
 										while($row = mysqli_fetch_array($result))
 										{
+											$demand_val = $is_leg1 ? $row['storage'] : $row['demand'];
 											echo "<tr><td>{$row['district']}</td>".
 											"<td>{$row['name']}</td>".
 											"<td>{$row['id']}</td>".
 											"<td>{$row['type']}</td>".
 											"<td>{$row['latitude']}</td>".
 											"<td>{$row['longitude']}</td>".
-											"<td>{$row['demand']}</td></tr>";
+											"<td>{$demand_val}</td></tr>";
 										}
 										
 										?>

@@ -5,6 +5,9 @@ require('Header.php');
 
 $id = $_POST['id'];
 $tablename = "warehouse_".$id;
+if (isset($_POST['step']) && $_POST['step'] == "leg1") {
+    $tablename = "warehouse_leg1_".$id;
+}
 
 ?>
 <style>
@@ -21,7 +24,7 @@ $tablename = "warehouse_".$id;
 
                 <!-- START BREADCRUMB -->
                 <ul class="breadcrumb">
-                    <li><a href="Warehouse.php">Home</a></li>
+                    <li><a href="<?php echo (isset($_POST['step']) && $_POST['step'] == 'leg1') ? 'OptimisedDataAllLeg1.php' : 'OptimisedDataAll.php'; ?>">Home</a></li>
                     <li class="active">Warehouse View</li>
                 </ul>
                 <!-- END BREADCRUMB -->

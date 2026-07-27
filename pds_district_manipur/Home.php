@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require('util/Connection.php');
 require('util/SessionCheck.php');
 require('Header.php');
@@ -281,6 +281,7 @@ if($currentTimestamp >= $targetTimestamp) {
 												<th style="font-size:16px">District Reason for not Approve</th>
 												<th style="font-size:16px">District Suggested Warehouse Distance (Km)</th>
 												<th style="font-size:16px">Admin Approved</th>										
+												<th style="font-size:16px">Action</th>										
                                             </tr>
                                         </thead>
 										<tbody id="table_body">
@@ -441,6 +442,12 @@ if($currentTimestamp >= $targetTimestamp) {
 		
 		function handleDistanceChange(selectedId){
 			newvalue = document.getElementById(selectedId).value;
+			if (newvalue !== '' && (isNaN(newvalue) || parseFloat(newvalue) < 0)) {
+				alert("Distance must be a numeric value greater than or equal to 0.");
+				document.getElementById(selectedId).value = '';
+				delete modifiedDistanceData[selectedId];
+				return;
+			}
 			modifiedDistanceData[selectedId] = newvalue;
 			if(newvalue==''){
 				delete modifiedDistanceData[selectedId];
@@ -466,6 +473,11 @@ if($currentTimestamp >= $targetTimestamp) {
 						}
 						if(!modifiedDistanceData.hasOwnProperty(key + "_iddistance")){
 							alert("New Id " + String(value) + " distance needs to be filled");
+							return;
+						}
+						var distVal = modifiedDistanceData[key + "_iddistance"];
+						if (isNaN(distVal) || parseFloat(distVal) < 0) {
+							alert("Distance must be a numeric value greater than or equal to 0.");
 							return;
 						}
 					}
@@ -703,6 +715,7 @@ if($currentTimestamp >= $targetTimestamp) {
 									var distance_district = obj[datafield]["new_distance_district"] !== null ? obj[datafield]["new_distance_district"] : "";
 									var district_change_approve = obj[datafield]["district_change_approve"] !== null ? obj[datafield]["district_change_approve"] : "";
 									
+									var isLocked = (approve_admin !== "" || district_change_approve !== "") ? "disabled" : "";
 									
 									var subpart1 = "<tr><td>" +  obj[datafield]["scenario"] +  "</td><td>"  + obj[datafield]["from"] +  "</td><td>"  + obj[datafield]["from_state"] +  "</td><td>"  + obj[datafield]["from_id"] +  "</td><td>"  + obj[datafield]["from_name"] +  "</td><td>"  + obj[datafield]["from_district"] +  "</td><td>"  + obj[datafield]["from_lat"] +  "</td><td>"  + obj[datafield]["from_long"] +  "</td><td>"  + obj[datafield]["to"] +  "</td><td>"  + obj[datafield]["to_state"] +  "</td><td>"  + obj[datafield]["to_id"] +  "</td><td>"  + obj[datafield]["to_name"] +  "</td><td>"  + obj[datafield]["to_district"] +  "</td><td>"  + obj[datafield]["to_lat"] +  "</td><td>"  + obj[datafield]["to_long"] +  "</td><td>"  + obj[datafield]["commodity"] +  "</td><td>"  + obj[datafield]["quantity"] +  "</td><td>"  + obj[datafield]["distance"] + "</td>";
 									
@@ -710,32 +723,38 @@ if($currentTimestamp >= $targetTimestamp) {
 										obj[datafield]["new_id"] = "";
 									}
 									
-									if(approve_admin=="yes" && newid_admin==""){
-										var admin_approve = "<td><button class='btn btn-info'>Approved</button></td>";
+									var admin_approve = "";
+									if(district_change_approve == "yes"){
+										admin_approve = "<td><button class='btn btn-info'>Approved</button></td>";
 									}
-									else if(approve_admin=="yes" && newid_district!=""){
-										var admin_approve = "<td><button class='btn btn-danger'>Not Approved</button></td>";
+									else if(approve_admin=="yes"){
+										admin_approve = "<td><button class='btn btn-info'>Approved</button></td>";
 									}
-									else if(approve_admin=="no"){
-										var admin_approve = "<td><button class='btn btn-danger'>Not Approved</button></td>";
+									else if(approve_admin=="no" || district_change_approve == "no"){
+										admin_approve = "<td><button class='btn btn-danger'>Not Approved</button></td>";
 									}
 									else if(approve_admin==""){
-										var admin_approve = "<td><button class='btn btn-warning'>Pending</button></td>";
+										admin_approve = "<td><button class='btn btn-warning'>Pending</button></td>";
+									}
+									else {
+										admin_approve = "<td><button class='btn btn-info'>Approved</button></td>";
 									}
 									
 									if(approve_district=="yes"){
 										var warehouse_id_part = "<td><button class='btn btn-info'>Reviewed</button></td><td>" + newid_district + "</td>";
 									}
 									else if(approve_district=="no"){
-										var warehouse_id_part = "<td><select class='form-control' onchange='enableDisable(\"" + uniqueid + "\")' id='" + uniqueid_bool + "' name='" + uniqueid_bool + "'><option value=''>Select</option><option value='yes'>Agree</option><option value='no'>Change ID</option></select></td><td><select class='form-control' onchange='handleNewIdChange(\"" + uniqueid + "\")' id='" + uniqueid + "' name='" + uniqueid + "' disabled><option value=''>Select Id</option>" + warehousepart + "</select></td>";
+										var warehouse_id_part = "<td><select class='form-control' " + isLocked + " onchange='enableDisable(\"" + uniqueid + "\")' id='" + uniqueid_bool + "' name='" + uniqueid_bool + "'><option value=''>Select</option><option value='yes'>Agree</option><option value='no'>Change ID</option></select></td><td><select class='form-control' " + isLocked + " onchange='handleNewIdChange(\"" + uniqueid + "\")' id='" + uniqueid + "' name='" + uniqueid + "' disabled><option value=''>Select Id</option>" + warehousepart + "</select></td>";
 									}
 									else{
-										var warehouse_id_part = "<td><select class='form-control' onchange='enableDisable(\"" + uniqueid + "\")' id='" + uniqueid_bool + "' name='" + uniqueid_bool + "'><option value=''>Select</option><option value='yes'>Agree</option><option value='no'>Change ID</option></select></td><td><select class='form-control' onchange='handleNewIdChange(\"" + uniqueid + "\")' id='" + uniqueid + "' name='" + uniqueid + "' disabled><option value=''>Select Id</option>" + warehousepart + "</select></td>";
-										uniqueid_bool_array.push(uniqueid_bool);
+										var warehouse_id_part = "<td><select class='form-control' " + isLocked + " onchange='enableDisable(\"" + uniqueid + "\")' id='" + uniqueid_bool + "' name='" + uniqueid_bool + "'><option value=''>Select</option><option value='yes'>Agree</option><option value='no'>Change ID</option></select></td><td><select class='form-control' " + isLocked + " onchange='handleNewIdChange(\"" + uniqueid + "\")' id='" + uniqueid + "' name='" + uniqueid + "' disabled><option value=''>Select Id</option>" + warehousepart + "</select></td>";
+										if (!isLocked) {
+											uniqueid_bool_array.push(uniqueid_bool);
+										}
 									}
 									
 									if(distance_district==null || distance_district==""){
-										var newdistance = "<td><input type='text' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
+										var newdistance = "<td><input type='number' step='any' min='0' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
 									}
 									else{
 										var newdistance = "<td>" + distance_district + "</td>"
@@ -745,10 +764,13 @@ if($currentTimestamp >= $targetTimestamp) {
 										var district_reason = "<td>" + reason_district + "</td>";
 									}
 									else{
-										var district_reason = "<td><select class='form-control' onchange='handleReasonChange(\"" + uniqueid_idreason + "\")' id='" + uniqueid_idreason + "' name='" + uniqueid_idreason + "' disabled><option value=''>Select</option><option value='Road not accessible'>Road not accessible</option><option value='Road repair going on'>Road repair going on</option><option value='Pertaining to Distance'>Pertaining to Distance</option></select></td>";
+										var district_reason = "<td><select class='form-control' " + isLocked + " onchange='handleReasonChange(\"" + uniqueid_idreason + "\")' id='" + uniqueid_idreason + "' name='" + uniqueid_idreason + "' disabled><option value=''>Select</option><option value='Road not accessible'>Road not accessible</option><option value='Road repair going on'>Road repair going on</option><option value='Pertaining to Distance'>Pertaining to Distance</option></select></td>";
 									}
 									
-									$('#table_body').append(subpart1 + warehouse_id_part + district_reason + newdistance  + admin_approve + "</tr>");
+									var save_btn = "<button class='btn btn-primary' " + isLocked + " onClick='saveRowData(\"" + uniqueid + "\")' style='margin-right:5px;'>Save</button>";
+									var reset_btn = "<button class='btn btn-warning' " + isLocked + " onClick='resetRowData(\"" + uniqueid + "\", \"" + obj[datafield]["from_id"] + "\", \"" + obj[datafield]["to_id"] + "\", \"" + obj[datafield]["commodity"] + "\")'>Reset</button>";
+									var action_btn = "<td>" + save_btn + reset_btn + "</td>";
+									$('#table_body').append(subpart1 + warehouse_id_part + district_reason + newdistance  + admin_approve + action_btn + "</tr>");
 								}
 							}
 							//fetchCardDataFromServer();							
@@ -797,6 +819,84 @@ if($currentTimestamp >= $targetTimestamp) {
 			return format.replace(/%(\d+)/g, function(match, index) {
 				return typeof args[index] !== 'undefined' ? args[index] : match;
 			});
+		}
+
+		function resetRowData(uniqueid, from_id, to_id, commodity) {
+			if (confirm("Are you sure you want to reset this row's data?")) {
+				// Remove from local modified data arrays
+				delete modifiedData[uniqueid];
+				delete modifiedReasonData[uniqueid + "_idreason"];
+				delete modifiedDistanceData[uniqueid + "_iddistance"];
+				delete modifiedIdData[uniqueid];
+				delete modifiedApproveData[uniqueid];
+				
+				// Post to API to reset in database
+				$.ajax({
+					type: "POST",
+					url: "api/ResetRowData.php",
+					data: {
+						from_id: from_id,
+						to_id: to_id,
+						commodity: commodity
+					},
+					cache: false,
+					success: function(response) {
+						try {
+							var res = JSON.parse(response);
+							if (res.status === "success") {
+								// Refresh the table data
+								fetchDataFromServerId();
+							} else {
+								alert("Error resetting data: " + res.message);
+							}
+						} catch (e) {
+							// Fallback
+							fetchDataFromServerId();
+						}
+					},
+					error: function() {
+						alert("Failed to reset data. Please check your connection.");
+					}
+				});
+			}
+		}
+
+		function saveRowData(uniqueid) {
+			// First, validate this row's data
+			var value = modifiedData[uniqueid];
+			if (value === undefined) {
+				alert("No changes to save for this row.");
+				return;
+			}
+			
+			if (value !== "yes" && value !== "" && value !== "same") {
+				if (!modifiedReasonData.hasOwnProperty(uniqueid + "_idreason")) {
+					alert("Reason needs to be selected");
+					return;
+				}
+				if (!modifiedDistanceData.hasOwnProperty(uniqueid + "_iddistance")) {
+					alert("Distance needs to be filled");
+					return;
+				}
+				var distVal = modifiedDistanceData[uniqueid + "_iddistance"];
+				if (isNaN(distVal) || parseFloat(distVal) < 0) {
+					alert("Distance must be a numeric value greater than or equal to 0.");
+					return;
+				}
+			}
+			
+			// Build parameters for this row only
+			var params = {};
+			params[uniqueid] = value;
+			if (modifiedReasonData.hasOwnProperty(uniqueid + "_idreason")) {
+				params[uniqueid + "_idreason"] = modifiedReasonData[uniqueid + "_idreason"];
+			}
+			if (modifiedDistanceData.hasOwnProperty(uniqueid + "_iddistance")) {
+				params[uniqueid + "_iddistance"] = modifiedDistanceData[uniqueid + "_iddistance"];
+			}
+			
+			// Submit the form for this row
+			post(params, "api/SaveData.php");
 		}
     </script>
     </body>
