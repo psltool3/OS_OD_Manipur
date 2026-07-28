@@ -35,10 +35,10 @@ if ($newpassword != $confirmpassword) {
 
 // Password validation: Minimum 8 characters, at least 1 uppercase letter, 1 digit, and 1 special character (or 'admin')
 $passwordPattern = '/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
-if ($newpassword !== "admin" && !preg_match($passwordPattern, $newpassword)) {
-    echo "Error: Password must be at least 8 characters long, contain one uppercase letter, one digit, and one special character.";
-    return;
-}
+// if ($newpassword !== "admin" && !preg_match($passwordPattern, $newpassword)) {
+//     echo "Error: Password must be at least 8 characters long, contain one uppercase letter, one digit, and one special character.";
+//     return;
+// }
 
 $query = "SELECT * FROM login WHERE username='" . $person->getUsername() . "'";
 $result = mysqli_query($con, $query);
@@ -62,7 +62,7 @@ if (password_verify($person->getPassword(), $dbHashedPassword)) {
     if (mysqli_query($con, $query1)) {
        // echo "Password updated successfully!";
         mysqli_close($con);
-        echo "<script>window.location.href = '../Login.html';</script>";
+        echo "<script>alert('Password updated successfully!'); window.location.href = '../Login.html';</script>";
     } else {
         echo "Error updating password: " . mysqli_error($con);
     }

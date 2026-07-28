@@ -1,44 +1,55 @@
 <?php
 require('../util/Connection.php');
 require('../structures/Login.php');
-
-require('Header.php');
-
-$newpassword = $_POST['newpassword'];
-$confirmpassword = $_POST['confirmpassword'];
-
-if($newpassword=="" || $confirmpassword==""){
-	echo "Error : Password is Empty";
-	return;
-}
-if($newpassword!=$confirmpassword){
-	echo "Error : Both Password doesn't match";
-	return;
-}
+require('../util/Security.php');
+require ('../util/Encryption.php');
+$nonceValue = 'nonce_value';
 
 $person = new Login;
+$Encryption = new Encryption();
+
+if (empty($_POST["username"]) || empty($_POST["oldpassword"]) || empty($_POST["newpassword"]) || empty($_POST["confirmpassword"])) {
+    die("Something Went Wrong");
+}
+
 $person->setUsername($_POST["username"]);
-$person->setPassword($_POST["oldpassword"]);
+$person->setPassword($Encryption->decrypt($_POST["oldpassword"], $nonceValue));
+$newpassword = $Encryption->decrypt($_POST["newpassword"], $nonceValue);
+$confirmpassword = $Encryption->decrypt($_POST["confirmpassword"], $nonceValue);
 
-if($_SESSION['user']!=$person->getUsername()){
-	echo "User is logged in with different username and password";
-	return;
+if ($newpassword == "" || $confirmpassword == "") {
+    echo "Error: Password is Empty";
+    return;
+}
+if ($newpassword != $confirmpassword) {
+    echo "Error: Both Passwords don't match";
+    return;
 }
 
-$query = "SELECT * FROM login WHERE username='".$person->getUsername()."' AND password='".$person->getPassword()."'";
-$result = mysqli_query($con,$query);
-$numrows = mysqli_num_rows($result);
+$query = "SELECT * FROM login WHERE username='" . $person->getUsername() . "'";
+$result = mysqli_query($con, $query);
+$row = mysqli_fetch_assoc($result);
 
-if($numrows == 0){
-	echo "Error : Old Password and username is incorrect";
+if (!$row) {
+    echo "Error: User not found!";
+    return;
 }
-else if($numrows > 0){
-	$query1 = "UPDATE login SET password='$newpassword' WHERE 1";
-	mysqli_query($con,$query1);
 
-	mysqli_close($con);
-	echo "<script>window.location.href = '../Login.php';</script>";
+$dbHashedPassword = $row['password'];
 
+if (password_verify($person->getPassword(), $dbHashedPassword)) {
+    // Hash the new password securely
+    $newhashedPassword = password_hash($newpassword, PASSWORD_DEFAULT);
+
+    $query1 = "UPDATE login SET password='$newhashedPassword' WHERE username='" . $person->getUsername() . "'";
+
+    if (mysqli_query($con, $query1)) {
+        mysqli_close($con);
+        echo "<script>alert('Password updated successfully!'); window.location.href = '../Login.html';</script>";
+    } else {
+        echo "Error updating password: " . mysqli_error($con);
+    }
+} else {
+    echo "Error: Password or Username is incorrect";
 }
 ?>
-<?php require('Fullui.php');  ?>

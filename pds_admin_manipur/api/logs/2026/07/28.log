@@ -1,0 +1,20 @@
+[2026-07-28 10:05:31] User -> Cost for leg2 Added ->admin@pds| Requested JSON -> {"cost_zweI4ckPlKfPRF":"4564"} | 2026 | july
+[2026-07-28 10:05:33] {"id":"zweI4ckPlKfPRF"}
+[2026-07-28 10:05:33] User -> Cost for leg2 Reset ->admin@pds| Requested JSON -> {"id":"zweI4ckPlKfPRF"} | 
+[2026-07-28 10:07:37] User -> Cost for leg2 Added ->admin@pds| Requested JSON -> {"cost_zweI4ckPlKfPRF":"33"} | 2026 | july
+[2026-07-28 10:07:39] {"id":"zweI4ckPlKfPRF"}
+[2026-07-28 10:07:39] User -> Cost for leg2 Reset ->admin@pds| Requested JSON -> {"id":"zweI4ckPlKfPRF"} | 
+[2026-07-28 10:23:12] User -> Cost for leg2 Added ->admin@pds| Requested JSON -> {"cost_zweI4ckPlKfPRF":"67"} | 2026 | july
+[2026-07-28 10:23:14] {"id":"zweI4ckPlKfPRF"}
+[2026-07-28 10:23:14] User -> Cost for leg2 Reset ->admin@pds| Requested JSON -> {"id":"zweI4ckPlKfPRF"} | 
+[2026-07-28 10:23:22] User -> Cost for leg1 Added ->admin@pds| Requested JSON -> {"cost_rJXQPpvdPLt7TA":"","cost_HgHfC5hzblqHTJ":"","cost_nmSgWPJcskj2gT":"4565"} | 2026 | july
+[2026-07-28 10:23:23] User -> Cost for leg1 Reset ->admin@pds| Requested JSON -> {"id":"nmSgWPJcskj2gT"} | 
+[2026-07-28 10:23:27] User -> Cost for leg1 Added ->admin@pds| Requested JSON -> {"cost_rJXQPpvdPLt7TA":"","cost_HgHfC5hzblqHTJ":"565","cost_nmSgWPJcskj2gT":""} | 2025 | july
+[2026-07-28 10:23:30] User -> Cost for leg1 Reset ->admin@pds| Requested JSON -> {"id":"HgHfC5hzblqHTJ"} | 
+[2026-07-28 10:24:36] User -> Cost for leg2 Added ->admin@pds| Requested JSON -> {"cost_zweI4ckPlKfPRF":"0"} | 2026 | july
+[2026-07-28 10:24:37] {"id":"zweI4ckPlKfPRF"}
+[2026-07-28 10:24:37] User -> Cost for leg2 Reset ->admin@pds| Requested JSON -> {"id":"zweI4ckPlKfPRF"} | 
+[2026-07-28 10:24:44] User -> Cost for leg1 Added ->admin@pds| Requested JSON -> {"cost_rJXQPpvdPLt7TA":"","cost_HgHfC5hzblqHTJ":"","cost_nmSgWPJcskj2gT":"0"} | 2026 | july
+[2026-07-28 10:24:45] User -> Cost for leg1 Reset ->admin@pds| Requested JSON -> {"id":"nmSgWPJcskj2gT"} | 
+[2026-07-28 10:25:37] User -> Warehouse added ->admin@pds| Requested JSON -> {"name":"AKshay","type":"motorable","latitude":"11","storage":"0","district":"Bishnupur","id":"8990","warehousetype":"swc","longitude":"89"}
+[2026-07-28 10:25:45] User -> Warehouse deleted -> admin@pds| Requested JSON -> {"uid":"WH_6a683649dba7"} | Akshay

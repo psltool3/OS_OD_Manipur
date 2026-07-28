@@ -11,7 +11,7 @@ require('Header.php');
 
 foreach ($_POST as $key => $value) {
     // Check if the parameter starts with 'cost_' and is not empty
-    if (substr($key, 0, 5) === 'cost_' && !empty($value)) {
+    if (substr($key, 0, 5) === 'cost_' && $value !== '') {
         // Extract the ID from the parameter name
         $id = substr($key, 5);
 		$value_temp = $value;
@@ -28,8 +28,8 @@ foreach ($_POST as $key => $value) {
             $value = filter_var($value, FILTER_VALIDATE_INT);
         }
 
-        // If $value is not a valid float or int, skip this iteration
-        if ($value === false) {
+        // If $value is not a valid float or int, or is negative, reject
+        if ($value === false || $value < 0) {
             echo "Error : Invalid value: $value_temp<br>";
 			return;
         }
