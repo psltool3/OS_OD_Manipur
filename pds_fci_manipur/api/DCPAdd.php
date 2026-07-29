@@ -4,7 +4,11 @@ require('../util/Connection.php');
 require('../structures/DCP.php');
 require('../util/SessionFunction.php');
 require('../structures/Login.php');
+$demand_original = isset($_POST['demand']) ? $_POST['demand'] : null;
 require('../util/Security.php');
+if ($demand_original === '0' || $demand_original === 0 || $demand_original === '0.00' || (is_numeric($demand_original) && floatval($demand_original) == 0)) {
+    $_POST['demand'] = '0';
+}
 require ('../util/Encryption.php');
 require('../util/Logger.php');
 $nonceValue = 'nonce_value';

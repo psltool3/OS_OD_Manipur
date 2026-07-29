@@ -118,6 +118,7 @@ if($currentTimestamp >= $targetTimestamp) {
 <script>
 	function setSelectedValue(obj_value,valueToSet) {
 		var obj = document.getElementById(obj_value);
+		if (!obj) return;
 		for (var i = 0; i < obj.options.length; i++) {
 			if (obj.options[i].value== valueToSet) {
 				obj.options[i].selected = true;
@@ -399,30 +400,26 @@ if($currentTimestamp >= $targetTimestamp) {
 		}
 		
 		function enableDisable(selectedId){
-			newvalue = document.getElementById(selectedId + "_bool").value;
+			var boolElem = document.getElementById(selectedId + "_bool");
+			if (!boolElem) return;
+			newvalue = boolElem.value;
 			if(newvalue=="yes"){
 				modifiedData[selectedId] = "yes";
-				document.getElementById(selectedId).disabled = true;
-				document.getElementById(selectedId + "_idreason").disabled = true;
-				document.getElementById(selectedId + "_iddistance").value = '';
-				document.getElementById(selectedId + "_iddistance").disabled = true;
+				var el = document.getElementById(selectedId); if(el) el.disabled = true;
+				var elr = document.getElementById(selectedId + "_idreason"); if(elr) elr.disabled = true;
+				var eld = document.getElementById(selectedId + "_iddistance"); if(eld) { eld.value = ''; eld.disabled = true; }
 			}
 			else if(newvalue=="no"){
 				modifiedData[selectedId] = "no";
-				document.getElementById(selectedId).value = '';
-				document.getElementById(selectedId).disabled = false;
-				document.getElementById(selectedId + "_idreason").value = '';
-				document.getElementById(selectedId + "_idreason").disabled = false;
-				document.getElementById(selectedId + "_iddistance").value = '';
-				document.getElementById(selectedId + "_iddistance").disabled = false;
+				var el = document.getElementById(selectedId); if(el) { el.value = ''; el.disabled = false; }
+				var elr = document.getElementById(selectedId + "_idreason"); if(elr) { elr.value = ''; elr.disabled = false; }
+				var eld = document.getElementById(selectedId + "_iddistance"); if(eld) { eld.value = ''; eld.disabled = false; }
 			}
 			else{
 				modifiedData[selectedId] = "same";
-				document.getElementById(selectedId).value = '';
-				document.getElementById(selectedId).disabled = true;
-				document.getElementById(selectedId + "_idreason").disabled = true;
-				document.getElementById(selectedId + "_iddistance").value = '';
-				document.getElementById(selectedId + "_iddistance").disabled = true;
+				var el = document.getElementById(selectedId); if(el) { el.value = ''; el.disabled = true; }
+				var elr = document.getElementById(selectedId + "_idreason"); if(elr) { elr.disabled = true; }
+				var eld = document.getElementById(selectedId + "_iddistance"); if(eld) { eld.value = ''; eld.disabled = true; }
 			}
 		}
 		
@@ -645,6 +642,7 @@ if($currentTimestamp >= $targetTimestamp) {
 					timeout: 59000,
 					success: function(result){
 						$('#table_body').empty();
+						uniqueid_bool_array = [];
 						try{
 							var resultarray = JSON.parse(result);
 							var warehousearray = resultarray["warehouse"];

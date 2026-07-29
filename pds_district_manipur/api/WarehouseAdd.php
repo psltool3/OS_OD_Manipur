@@ -80,9 +80,9 @@ if(!isStringNumber($_POST["storage"])) {
 }
 
 
-    // Latitude check (must be less than 40)
-if (!is_numeric($_POST["latitude"]) || $_POST["latitude"] >= 40) {
-    echo "Error : Latitude must be less than 40. Given: " . $_POST["latitude"];
+    // Latitude check (must be greater than 0 and less than 40)
+if (!is_numeric($_POST["latitude"]) || floatval($_POST["latitude"]) <= 0 || $_POST["latitude"] >= 40) {
+    echo "Error : Latitude must be greater than 0 and less than 40. Given: " . $_POST["latitude"];
     exit();
 }
 

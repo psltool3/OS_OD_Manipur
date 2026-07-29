@@ -5,7 +5,11 @@ require('../structures/Warehouse.php');
 require('../util/SessionFunction.php');
 require('../structures/Login.php');
 require('../util/Logger.php');
+$storage_original = isset($_POST['storage']) ? $_POST['storage'] : null;
 require('../util/Security.php');
+if ($storage_original === '0' || $storage_original === 0) {
+    $_POST['storage'] = '0';
+}
 require ('../util/Encryption.php');
 $nonceValue = 'nonce_value';
 
@@ -67,9 +71,9 @@ if (!isStringNumber($_POST["storage"])) {
 }
 
 
-    // Latitude check (must be less than 40)
-if (!is_numeric($_POST["latitude"]) || $_POST["latitude"] >= 40) {
-    echo "Error : Latitude must be less than 40. Given: " . $_POST["latitude"];
+    // Latitude check (must be greater than 0 and less than 40)
+if (!is_numeric($_POST["latitude"]) || floatval($_POST["latitude"]) <= 0 || $_POST["latitude"] >= 40) {
+    echo "Error : Latitude must be greater than 0 and less than 40. Given: " . $_POST["latitude"];
     exit();
 }
 
