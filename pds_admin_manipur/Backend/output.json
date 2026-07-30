@@ -299,18 +299,60 @@
       "Storage_Capacity": "31320",
       "Owned/Rented": "",
       "quantity of Wheat stored (Quintals)": ""
+    },
+    {
+      "State Name": "",
+      "WH_District": "Bishnupur",
+      "WH_Name": "Akshay",
+      "WH_ID": "9000",
+      "Type of WH": "swc",
+      "WH_Lat": "8",
+      "WH_Long": "90",
+      "Storage_Capacity": "89",
+      "Owned/Rented": "",
+      "quantity of Wheat stored (Quintals)": ""
     }
   ],
   "fci": [
     {
       "State Name": "",
+      "WH_District": "Leh",
+      "WH_Name": "Kangrimill",
+      "WH_ID": "Mill1",
+      "Type of WH": "Mill",
+      "WH_Lat": "34.29133",
+      "WH_Long": "77.650331",
+      "Storage_Capacity": "60000"
+    },
+    {
+      "State Name": "",
+      "WH_District": "Kargil",
+      "WH_Name": "Atta Store/Suru Valley RF Mill",
+      "WH_ID": "Mill2",
+      "Type of WH": "Mill",
+      "WH_Lat": "34.398087",
+      "WH_Long": "75.992401",
+      "Storage_Capacity": "44535.6"
+    },
+    {
+      "State Name": "",
       "WH_District": "Bishnupur",
       "WH_Name": "Akshay",
-      "WH_ID": "1",
-      "Type of WH": "fd",
-      "WH_Lat": "12",
+      "WH_ID": "6",
+      "Type of WH": "vg",
+      "WH_Lat": "11",
+      "WH_Long": "78",
+      "Storage_Capacity": "98"
+    },
+    {
+      "State Name": "",
+      "WH_District": "Bishnupur",
+      "WH_Name": "Akshaydf",
+      "WH_ID": "899",
+      "Type of WH": "sdcd",
+      "WH_Lat": "1",
       "WH_Long": "89",
-      "Storage_Capacity": "768"
+      "Storage_Capacity": "0"
     }
   ],
   "fps": [

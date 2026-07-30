@@ -58,6 +58,19 @@
           return false;
         }
       }
+
+      function togglePasswordVisibility(inputId, icon) {
+        var input = document.getElementById(inputId);
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          input.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
     </script>
     <style>
       #image {
@@ -102,36 +115,81 @@
             </div>
 
             <div class="form-group">
-              <div class="col-md-12">
+              <div class="col-md-12" style="position: relative;">
                 <input
                   type="password"
                   id="oldpassword"
                   name="oldpassword"
                   class="form-control"
                   placeholder="Current Password"
+                  style="padding-right: 40px;"
                 />
+                <span
+                  class="fa fa-eye"
+                  style="
+                    position: absolute;
+                    right: 25px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    color: #aaa;
+                    z-index: 10;
+                    font-size: 16px;
+                  "
+                  onclick="togglePasswordVisibility('oldpassword', this)"
+                ></span>
               </div>
             </div>
             <div class="form-group">
-              <div class="col-md-12">
+              <div class="col-md-12" style="position: relative;">
                 <input
                   type="password"
                   id="newpassword"
                   name="newpassword"
                   class="form-control"
                   placeholder="New Password"
+                  style="padding-right: 40px;"
                 />
+                <span
+                  class="fa fa-eye"
+                  style="
+                    position: absolute;
+                    right: 25px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    color: #aaa;
+                    z-index: 10;
+                    font-size: 16px;
+                  "
+                  onclick="togglePasswordVisibility('newpassword', this)"
+                ></span>
               </div>
             </div>
             <div class="form-group">
-              <div class="col-md-12">
+              <div class="col-md-12" style="position: relative;">
                 <input
                   type="password"
                   id="confirmpassword"
                   name="confirmpassword"
                   class="form-control"
                   placeholder="Confirm Password"
+                  style="padding-right: 40px;"
                 />
+                <span
+                  class="fa fa-eye"
+                  style="
+                    position: absolute;
+                    right: 25px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    color: #aaa;
+                    z-index: 10;
+                    font-size: 16px;
+                  "
+                  onclick="togglePasswordVisibility('confirmpassword', this)"
+                ></span>
               </div>
             </div>
             <div class="form-group">

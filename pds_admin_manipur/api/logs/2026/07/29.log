@@ -29,3 +29,9 @@
 [2026-07-29 11:42:02] User -> Send  Message ->admin@pds| Requested JSON -> {"message":",jhgjkguk","uniqueid":"all"} | dfpd@pds
 [2026-07-29 11:42:02] User -> Send  Message ->admin@pds| Requested JSON -> {"message":",jhgjkguk","uniqueid":"all"} | fci@pds
 [2026-07-29 11:42:02] User -> Send  Message ->admin@pds| Requested JSON -> {"message":",jhgjkguk","uniqueid":"all"} | fci@pds
+[2026-07-29 12:40:26] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500300206 - FRice
+[2026-07-29 12:41:31] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500300206| FF12005
+[2026-07-29 12:55:40] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500100088| 14608027
+[2026-07-29 13:00:38] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500100088 - FRice
+[2026-07-29 13:02:52] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500100088| FF12003
+[2026-07-29 13:03:06] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500100088 - FRice
