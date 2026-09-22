@@ -572,11 +572,16 @@ if($currentTimestamp >= $targetTimestamp) {
 							var fromidarray = resultarray.map(function(item) {
 								return item.from_id;
 							});
-							if (fromidarray.length > 0) {
-								fromidarray.forEach(function(fromId) {
+							var fromid_fromnamearray = resultarray.map(function(item) {
+								var idStr = (item.from_id !== null && item.from_id !== undefined) ? item.from_id.toString() : '';
+								var nameStr = (item.from_name !== null && item.from_name !== undefined) ? item.from_name.toString() : '';
+								return idStr + "_" + nameStr;
+							});
+							if (fromid_fromnamearray.length > 0) {
+								fromid_fromnamearray.forEach(function(fromId_fromName) {
 									var option = document.createElement("option");
-									option.text = fromId;
-									option.value = fromId;
+									option.text = fromId_fromName;
+									option.value = fromId_fromName.split('_')[0];
 									selectInput.appendChild(option);
 								});
 							}
@@ -611,13 +616,18 @@ if($currentTimestamp >= $targetTimestamp) {
 						if(result!=""){
 							var resultarray = JSON.parse(result);
 							var toidarray = resultarray.map(function(item) {
-								return item.to;
+								return item.to_id;
 							});
-							if (toidarray.length > 0) {
-								toidarray.forEach(function(toId) {
+							var toid_tonamearray = resultarray.map(function(item) {
+								var idStr = (item.to_id !== null && item.to_id !== undefined) ? item.to_id.toString() : '';
+								var nameStr = (item.to_name !== null && item.to_name !== undefined) ? item.to_name.toString() : '';
+								return idStr + "_" + nameStr;
+							});
+							if (toid_tonamearray.length > 0) {
+								toid_tonamearray.forEach(function(toId_toName) {
 									var option = document.createElement("option");
-									option.text = toId;
-									option.value = toId;
+									option.text = toId_toName;
+									option.value = toId_toName.split('_')[0];
 									selectInput.appendChild(option);
 								});
 							}

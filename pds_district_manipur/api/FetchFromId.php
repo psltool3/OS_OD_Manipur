@@ -25,9 +25,9 @@ if($rolled_out != "1"){
 }
 
 $tablename = "optimiseddata_".$id;
-$result = $con->query("SELECT DISTINCT from_id from $tablename WHERE to_district='$district'");
+$result = $con->query("SELECT DISTINCT from_id, from_name from $tablename WHERE to_district='$district'");
 
-if ($result->num_rows > 0) {
+if ($result && $result->num_rows > 0) {
     $rows = array();
     while ($row = $result->fetch_assoc()) {
         $rows[] = $row;

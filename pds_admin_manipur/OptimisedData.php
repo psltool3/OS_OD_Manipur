@@ -872,13 +872,16 @@ while($row = mysqli_fetch_array($result))
 						if(result!=""){
 							var resultarray = JSON.parse(result);
 							var toidarray = resultarray.map(function(item) {
-								return item.to;
+								return item.to_id;
 							});
-							if (toidarray.length > 0) {
-								toidarray.forEach(function(toId) {
+							var toid_tonamearray = resultarray.map(function(item) {
+								return item.to_id.toString() + "_" + item.to_name.toString();
+							});
+							if (toid_tonamearray.length > 0) {
+								toid_tonamearray.forEach(function(toId_toName) {
 									var option = document.createElement("option");
-									option.text = toId;
-									option.value = toId;
+									option.text = toId_toName;
+									option.value = toId_toName.split('_')[0];
 									selectInput.appendChild(option);
 								});
 							}
