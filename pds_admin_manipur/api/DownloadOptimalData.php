@@ -33,9 +33,11 @@ if (isset($_GET['format'])) {
 	}
 
 	$tablename = "optimiseddata_".$id;
-	$query = "SELECT * FROM ".$tablename." WHERE to_district='$district'";
+	$approved_filter = "approve_district='yes' AND (approve_admin='yes' OR district_change_approve='yes' OR (district_change_approve='no' AND (new_id_admin IS NULL OR new_id_admin='' OR new_id_admin='0')) OR (new_id_admin IS NOT NULL AND new_id_admin<>'' AND new_id_admin<>'0'))";
 	if($district=="" OR $district=="all"){
-		$query = "SELECT * FROM ".$tablename." WHERE 1";
+		$query = "SELECT * FROM ".$tablename." WHERE ".$approved_filter." AND status='implemented'";
+	} else {
+		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND ".$approved_filter." AND status='implemented'";
 	}
 	
     $result = mysqli_query($con,$query);
@@ -62,7 +64,7 @@ if (isset($_GET['format'])) {
 				$row["from_name"] = $row['new_name_admin'];
 				$row["distance"] = $row['new_distance_admin'];
 			}
-			else if(($row['new_id_district']!=null and $row['new_id_district']!="" and $row['new_id_district']!="0") and $row['admin_approve']=="yes"){
+			else if(($row['new_id_district']!=null and $row['new_id_district']!="" and $row['new_id_district']!="0") and $row['approve_admin']=="yes"){
 				$new_id = $row['new_id_district'];
 				$query_warehouse = "SELECT latitude,longitude,district FROM warehouse WHERE id='$new_id'";
 				$result_warehouse = mysqli_query($con,$query_warehouse);

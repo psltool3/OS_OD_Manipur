@@ -538,7 +538,7 @@ require('util/Logger.php');
 						&nbsp
 						<div class="row">
 							<div
-								style="font-size: 20px; font-weight: 700; margin-top: 0px; padding: 5px; margin-bottom: 20px;">
+								style="font-size: 20px; font-weight: 700; margin-top: 0px; padding: 5px; margin-bottom: 20px; color: black">
 								<i class="fa fa-info-circle" aria-hidden="true"></i> Pre-Analysis
 							</div>
 							<div class="row">
@@ -593,7 +593,7 @@ require('util/Logger.php');
 									<div class="card h-100"
 										style="background-color:#00FF00; color:white; padding:12px; font-weight: bold;">
 										<div style="font-size:20px" id="total_fps1"></div>
-										<div style="font-size:14px">Total Direct FPS Demands (Qtl)</div>
+										<div style="font-size:14px">Total Direct FPS Count</div>
 									</div>
 								</div>
 								<div class="col-md-4 mb-4">

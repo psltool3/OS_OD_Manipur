@@ -9,30 +9,37 @@ $query = "SELECT * FROM optimised_table ORDER BY last_updated DESC LIMIT 1";
 $result = mysqli_query($con,$query);
 $response = array();
 $id = "";
+$rolled_out = "0";
 while($row = mysqli_fetch_array($result))
 {
 	$id= $row["id"];
+	$rolled_out = isset($row["rolled_out"]) ? $row["rolled_out"] : "0";
 }
 
+$totalids = 0;
+$totalidsreviewed = 0;
+$totalidsrequested = 0;
+$totalidsapproved = 0;
 
-$tablename = "optimiseddata_".$id;
+if($rolled_out == '1'){
+	$tablename = "optimiseddata_".$id;
 
+	$query = "SELECT to_district FROM ". $tablename ." WHERE to_district='$district'";
+	$result = mysqli_query($con,$query);
+	$totalids = mysqli_num_rows($result);
 
-$query = "SELECT to_district FROM ". $tablename ." WHERE to_district='$district'";
-$result = mysqli_query($con,$query);
-$totalids = mysqli_num_rows($result);
+	$query = "SELECT approve_district FROM ". $tablename ." WHERE to_district='$district' AND approve_district='yes'";
+	$result = mysqli_query($con,$query);
+	$totalidsreviewed = mysqli_num_rows($result);
 
-$query = "SELECT approve_district FROM ". $tablename ." WHERE to_district='$district' AND approve_district='yes'";
-$result = mysqli_query($con,$query);
-$totalidsreviewed = mysqli_num_rows($result);
+	$query = "SELECT new_id_district FROM ". $tablename ." WHERE to_district='$district' AND new_id_district<>''";
+	$result = mysqli_query($con,$query);
+	$totalidsrequested = mysqli_num_rows($result);
 
-$query = "SELECT new_id_district FROM ". $tablename ." WHERE to_district='$district' AND new_id_district<>''";
-$result = mysqli_query($con,$query);
-$totalidsrequested = mysqli_num_rows($result);
-
-$query = "SELECT approve_admin FROM ". $tablename ." WHERE to_district='$district' AND approve_admin='yes'";
-$result = mysqli_query($con,$query);
-$totalidsapproved = mysqli_num_rows($result);
+	$query = "SELECT approve_admin FROM ". $tablename ." WHERE to_district='$district' AND approve_admin='yes'";
+	$result = mysqli_query($con,$query);
+	$totalidsapproved = mysqli_num_rows($result);
+}
 
 //code to check the time expiry
 
@@ -157,6 +164,14 @@ if($currentTimestamp >= $targetTimestamp) {
                             <div class="panel panel-default">
 								<div class="panel-heading">
                                     <h3 class="panel-title">Manipur Intra Route Optimisation For PDS District - <b><?php echo $district; ?></b> <div id="timer"> <b>Time Left &nbsp </b> <span id="countdown"></span></h3>
+									</br></br>
+									<?php if($rolled_out=='1'){
+											echo "<center><h3 style='color:green'>Plan has been rolled out to District </h3></center>";
+										}
+										else{
+											echo "<center><h3 style='color:red'>Plan yet to be rolled out to District</h3></center>";
+										}
+									?>
                                 </div>
                             </div>
 							<div class="row">

@@ -418,19 +418,6 @@ require('Header.php');
 		var district = document.getElementById("district").value;
 		var month = document.getElementById("month").value;
 		
-		if(district==""){
-			district = "";
-			var dropdown = document.getElementById("district");
-			for (var i = 0; i < dropdown.options.length; i++) {
-				var option = dropdown.options[i];
-				if (option.value.trim() !== "" && option.value.trim().toLowerCase() !== "all") {
-					dropdown.selectedIndex = i;
-					district = option.value;
-					break;
-				}
-			}
-		}
-		
 		if(district=="all"){
 			district = "";
 		}

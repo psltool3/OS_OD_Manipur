@@ -11,11 +11,12 @@ $query = "SELECT * FROM optimised_table ORDER BY last_updated DESC LIMIT 1";
 $result = mysqli_query($con,$query);
 $response = array();
 $id = "";
+$rolled_out = "0";
 while($row = mysqli_fetch_array($result))
 {
 	$id= $row["id"];
+	$rolled_out = isset($row["rolled_out"]) ? $row["rolled_out"] : "0";
 }
-
 
 $tablename = "optimiseddata_".$id;
 
@@ -26,6 +27,19 @@ $from_id = "";
 $to_id = "";
 $data = array();
 $warehouse = array();
+
+if($rolled_out != "1"){
+	$query_warehouse = "SELECT * from warehouse WHERE district='$district' ";
+	$result_warehouse = mysqli_query($con,$query_warehouse);
+	while($row_warehouse = mysqli_fetch_array($result_warehouse)){
+		$warehouse[] = $row_warehouse;
+	}
+	$resultarray = [];
+	$resultarray["data"] = array();
+	$resultarray["warehouse"] = $warehouse;
+	echo json_encode($resultarray);
+	exit;
+}
 
 
 if(isset($_POST['fromid'])){

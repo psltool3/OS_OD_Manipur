@@ -54,11 +54,11 @@ foreach ($_POST as $key => $value) {
 	$commodity = str_replace('_', '.', $commodity);
 	$commodity = str_replace('.bool', '', $commodity);
 	if($value=="yes"){
-		$query = "UPDATE " . $tablename . " SET approve_admin='yes' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
+		$query = "UPDATE " . $tablename . " SET approve_admin='yes', district_change_approve='yes' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
 		writeLog("User ->" ." Save Data | approve admin change yes ->". $_SESSION['user'] . "| " . $fromid . " - " . $toid . " - ". $commodity);
 	}
 	else if($value=="same"){
-		$query = "UPDATE " . $tablename . " SET approve_admin='no' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
+		$query = "UPDATE " . $tablename . " SET approve_admin='no', district_change_approve='no', new_id_admin=NULL, new_name_admin=NULL, new_distance_admin=NULL, reason_admin=NULL WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
 		writeLog("User ->" ." Save Data | approve admin change no ->". $_SESSION['user'] . "| " . $fromid . " - " . $toid . " - ". $commodity);
 	}
 	else if($value=="no"){
@@ -76,7 +76,7 @@ foreach ($_POST as $key => $value) {
 		$name = $row_name['name'];
 		$reason = $_POST[$key."_idreason"];
 		$distance = $_POST[$key."_iddistance"];
-		$query = "UPDATE " . $tablename . " SET new_id_admin='$value', new_name_admin='$name', approve_admin='yes', new_distance_admin='$distance', reason_admin='$reason' WHERE from_id='$fromid' AND to_id='$toid'";
+		$query = "UPDATE " . $tablename . " SET new_id_admin='$value', new_name_admin='$name', approve_admin='no', district_change_approve='no', new_distance_admin='$distance', reason_admin='$reason' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
 		writeLog("User ->" ." Save Data | approve district change id ->". $_SESSION['user'] . "| " . $fromid . " - " . $toid . "| " . $value);
 	}
 	mysqli_query($con,$query);

@@ -38,7 +38,7 @@ require('Header.php');
                                 <div class="btn-group pull-right" style="margin-top:10px;margin-right:13px">
                                         <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#" onClick ="$('#export_table').tableExport({type:'excel',escape:'false'});"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                            <li><a href="#" onClick ="$('#export_table').tableExport({type:'excel',escape:'false',ignoreColumn:[1,2]});"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
                                         </ul>
                                  </div>
                                 <div class="panel-body">

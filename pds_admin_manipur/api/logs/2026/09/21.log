@@ -1,0 +1,9 @@
+[2026-09-21 17:22:57] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500100105 - FRice
+[2026-09-21 17:23:11] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500100105| 14608338
+[2026-09-21 17:26:18] User -> Save Data | approve admin change no ->admin@pds| 14608337 - 127500100101 - FRice
+[2026-09-21 17:27:19] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500100105 - FRice
+[2026-09-21 17:27:32] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500100105| 14608027
+[2026-09-21 17:42:27] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500100105 - FRice
+[2026-09-21 17:43:12] User -> Save Data | approve admin change yes ->admin@pds| 14608337 - 127500100105 - FRice
+[2026-09-21 17:43:33] Admin User -> Reset Row Data | admin@pds | 14608337 - 127500100105 - FRice
+[2026-09-21 17:45:37] User -> Save Data | approve district change id ->admin@pds| 14608337 - 127500100105| 14608330

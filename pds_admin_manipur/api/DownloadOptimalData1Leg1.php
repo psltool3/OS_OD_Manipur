@@ -28,9 +28,10 @@ if (isset($_GET['format'])) {
 	}
 
 	$tablename = "optimiseddata_leg1_".$id;
-	$query = "SELECT * FROM ".$tablename." WHERE to_district='$district'";
-	if($district=="" OR $district=="all"){
-		$query = "SELECT * FROM ".$tablename." WHERE 1";
+	$approved_filter = "approve_admin='yes' AND status='implemented'";
+	$query = "SELECT * FROM ".$tablename." WHERE ".$approved_filter;
+	if($district!="" and $district!="all"){
+		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND ".$approved_filter;
 	}
     $result = mysqli_query($con,$query);
     $numrows = mysqli_num_rows($result);
