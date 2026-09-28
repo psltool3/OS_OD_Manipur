@@ -52,7 +52,7 @@ foreach ($_POST as $key => $value) {
 	$commodity = $parts[2];
 	$toid = str_replace('_', '.', $toid);
 	$commodity = str_replace('_', '.', $commodity);
-	$commodity = str_replace('.bool', '', $commodity);
+	$commodity = str_replace(array('.bool', '_bool'), '', $commodity);
 	if($value=="yes"){
 		$query = "UPDATE " . $tablename . " SET approve_admin='yes', district_change_approve='yes' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
 		writeLog("User ->" ." Save Data | approve admin change yes ->". $_SESSION['user'] . "| " . $fromid . " - " . $toid . " - ". $commodity);

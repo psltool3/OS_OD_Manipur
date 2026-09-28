@@ -27,7 +27,7 @@ if (isset($_GET['format'])) {
 	$result = mysqli_query($con, $query);
 	if($result!=NULL or $result!=false){
 		$row = mysqli_fetch_assoc($result);
-		$query = "SELECT to_district, SUM(CASE WHEN status = 'implemented' THEN 1 ELSE 0 END) AS implemented_count, SUM(CASE WHEN status = 'implemented' THEN 0 ELSE 1 END) AS notimplemented_count, SUM(CASE WHEN approve_district = 'yes' THEN 1 ELSE 0 END) AS district_approved_count, SUM(CASE WHEN approve_district = 'yes' THEN 0 ELSE 1 END) AS notdistrict_approved_count, SUM(CASE WHEN approve_admin = 'yes' THEN 1 ELSE 0 END) AS admin_approved_count, SUM(CASE WHEN approve_district = 'yes' THEN 0 ELSE 1 END) AS notadmin_approved_count, COUNT(*) AS total_tags FROM optimiseddata_".$row['id']." GROUP BY to_district;";
+		$query = "SELECT to_district, SUM(CASE WHEN status = 'implemented' THEN 1 ELSE 0 END) AS implemented_count, SUM(CASE WHEN status = 'implemented' THEN 0 ELSE 1 END) AS notimplemented_count, SUM(CASE WHEN approve_district = 'yes' THEN 1 ELSE 0 END) AS district_approved_count, SUM(CASE WHEN approve_district = 'yes' THEN 0 ELSE 1 END) AS notdistrict_approved_count, SUM(CASE WHEN approve_admin = 'yes' THEN 1 ELSE 0 END) AS admin_approved_count, SUM(CASE WHEN approve_admin = 'yes' THEN 0 ELSE 1 END) AS notadmin_approved_count, COUNT(*) AS total_tags FROM optimiseddata_".$row['id']." GROUP BY to_district;";
 		$result = mysqli_query($con,$query);
 		if($result!=NULL or $result!=false){
 			$numrows = mysqli_num_rows($result);

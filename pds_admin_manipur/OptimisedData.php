@@ -593,10 +593,11 @@ while($row = mysqli_fetch_array($result))
 		
 		function acceptAll(){
 			for (let i = 0; i < uniqueid_array.length; i++) {
-				setSelectedValue(uniqueid_array[i],'yes');
-				approvalFunction(uniqueid_array[i]);
+				var bool_id = uniqueid_array[i];
+				setSelectedValue(bool_id, 'yes');
+				var uniqueid = bool_id.replace("_bool", "");
+				enableDisable(uniqueid);
 			}
-			console.log("shallu");
 		}
 		
 		function fetchDataFromServerDistrict(){
