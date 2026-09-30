@@ -116,13 +116,13 @@ require('Header.php');
 											
 											
 											<div class="form-group">
-                                                <label class="col-md-3 control-label">Off take of FRice in Quintals*</label>
+                                                <label class="col-md-3 control-label">Total FRice Offereds in Quintals*</label>
                                                 <div class="col-md-9">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="fa fa-info"></span></span>
                                                         <input type="text" class="form-control" id="demand" name="demand" required />
                                                     </div>
-                                                    <span class="help-block"> Off take of FRice in Quintals</span>
+                                                    <span class="help-block"> Total FRice Offereds in Quintals</span>
                                                 </div>
                                             </div>
 										   
@@ -229,6 +229,24 @@ require('Header.php');
 
             if (name === '' || type === '' || latitude === '' || longitude === '' || id === '' || demand === '' || district === '') {
                 alert('Please enter all fields');
+                return false;
+            }
+
+            var latVal = parseFloat(latitude);
+            if (isNaN(latVal) || latVal <= 0 || latVal >= 40) {
+                alert('Error : Latitude must be greater than 0 and less than 40.');
+                return false;
+            }
+
+            var longVal = parseFloat(longitude);
+            if (isNaN(longVal) || longVal <= 65 || longVal >= 100) {
+                alert('Error : Longitude must be greater than 65 and less than 100.');
+                return false;
+            }
+
+            var demandVal = parseFloat(demand);
+            if (isNaN(demandVal) || demandVal < 0) {
+                alert('Error : Total FRice Offereds (Qtl) must be 0 or greater.');
                 return false;
             }
 			

@@ -57,7 +57,22 @@ require('Header.php');
                             <!-- START SIMPLE DATATABLE -->
                             <div class="panel panel-default">
 								<div class="panel-heading">                                
-                                    <h3 class="panel-title">Data</h3> 
+                                    <h3 class="panel-title" style="display:inline-block">Data</h3>
+									<div style="float:right">
+										<label style="margin-right:5px;font-weight:bold;font-size:14px">Select Year:</label>
+										<select id="yearFilter" class="form-control" style="width:auto;display:inline-block;height:30px;padding:2px 10px;" onchange="filterByYear()">
+											<option value="all">All Years</option>
+											<?php
+											$years_query = "SELECT DISTINCT year FROM optimised_table WHERE year IS NOT NULL AND year != '' ORDER BY year DESC";
+											$years_result = mysqli_query($con, $years_query);
+											if($years_result){
+												while($y_row = mysqli_fetch_assoc($years_result)){
+													echo "<option value='{$y_row['year']}'>{$y_row['year']}</option>";
+												}
+											}
+											?>
+										</select>
+									</div>
                                 </div>
 								<!--<button class='btn btn-success' style="float:right;margin-top:10px;margin-right:13px" onclick="send_all('all')">Send Email to All</button>-->
 								<div class="panel-body">
@@ -221,6 +236,19 @@ require('Header.php');
 		
 		function generate_report(temp_id, leg_id){
 			post({id:temp_id,step:"all",legid:leg_id} ,"GenerateDataView.php");
+		}
+
+		function filterByYear(){
+			var selectedYear = document.getElementById('yearFilter').value;
+			var rows = document.querySelectorAll('#table_body tr');
+			rows.forEach(function(row){
+				var rowYear = row.children[0].textContent.trim();
+				if(selectedYear === 'all' || rowYear === selectedYear){
+					row.style.display = '';
+				} else {
+					row.style.display = 'none';
+				}
+			});
 		}
 		
 		function send_email(temp_id){	

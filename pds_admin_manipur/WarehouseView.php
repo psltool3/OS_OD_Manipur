@@ -3,7 +3,14 @@ require('util/Connection.php');
 require('util/SessionCheck.php');
 require('Header.php');
 
-$id = $_POST['id'];
+$id = isset($_POST['id']) ? $_POST['id'] : '';
+if (empty($id)) {
+	$res_latest = mysqli_query($con, "SELECT id FROM optimised_table ORDER BY id DESC LIMIT 1");
+	if ($res_latest && mysqli_num_rows($res_latest) > 0) {
+		$row_latest = mysqli_fetch_assoc($res_latest);
+		$id = (string)$row_latest['id'];
+	}
+}
 $tablename = "warehouse_".$id;
 
 ?>

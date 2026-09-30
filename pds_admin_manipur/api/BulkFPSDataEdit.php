@@ -59,7 +59,7 @@ $result = mysqli_query($con,$query);
 $numrows = mysqli_num_rows($result);
 if($numrows>0){
 	while($row=mysqli_fetch_assoc($result)){
-		array_push($districts,$row["name"]);
+		array_push($districts, strtoupper(trim($row["name"])));
 	}
 }
 
@@ -81,16 +81,16 @@ function isValidCoordinate($value, $coordinateType) {
     // Check if it's latitude or longitude and validate within the range
     switch ($coordinateType) {
         case 'latitude':
-            return ($coordinate >= -90 && $coordinate <= 90);
+            return ($coordinate > 0 && $coordinate < 40);
         case 'longitude':
-            return ($coordinate >= -180 && $coordinate <= 180);
+            return ($coordinate > 65 && $coordinate < 100);
         default:
             return false;
     }
 }
 
 function isStringNumber($stringValue) {
-    return is_numeric($stringValue);
+    return is_numeric($stringValue) && floatval($stringValue) >= 0;
 }
 
 
@@ -123,17 +123,17 @@ try{
 						exit();
 					}
 					if(!isValidCoordinate($column[$latitude],'latitude') or !isValidCoordinate($column[$longitude],'longitude')){
-						echo "Error : Check Latitude and Longitude Value Latitude: ".$column[$latitude]." Longitude: ".$column[$longitude];
+						echo "Error : Latitude must be greater than 0 less than 40 and long greater than 65 and less than 100";
 						echo "</br>";
 						$redirect = 0;
 					}
 
-					if(!isStringNumber($column[$demand])){
-						echo "Error : Check Demand Value of FRice: ".$column[$demand];
+					if(!isStringNumber($column[$demand]) || floatval($column[$demand]) < 0){
+						echo "Error : Demand capacity must be greater than or equal to 0. Given: ".$column[$demand];
 						echo "</br>";
 						$redirect = 0;
 					}					
-					if(!in_array($column[$district], $districts)){
+					if(!in_array(strtoupper(trim($column[$district])), $districts)){
 						echo "Error : Check District Name: ".$column[$district];
 						echo "</br>";
 						$redirect = 0;
@@ -153,15 +153,15 @@ try{
 						$redirect = 0;
 					}
 					
-					if (!is_numeric($column[$latitude]) || $column[$latitude] >= 40) {
-						echo "Error : Latitude must be less than 40. Given: " . $column[$latitude];
+					if (!is_numeric($column[$latitude]) || floatval($column[$latitude]) <= 0 || floatval($column[$latitude]) >= 40) {
+						echo "Error : Latitude must be greater than 0 and less than 40. Given: " . $column[$latitude];
 						echo "</br>";
 						$redirect = 0;
 					}
 
-					// Longitude check (must be more than 65)
-					if (!is_numeric($column[$longitude]) || $column[$longitude] <= 65) {
-						echo "Error : Longitude must be more than 65. Given: " . $column[$longitude];
+					// Longitude check (must be greater than 65 and less than 100)
+					if (!is_numeric($column[$longitude]) || floatval($column[$longitude]) <= 65 || floatval($column[$longitude]) >= 100) {
+						echo "Error : Longitude must be greater than 65 and less than 100. Given: " . $column[$longitude];
 						echo "</br>";
 						$redirect = 0;
 					}
@@ -177,7 +177,7 @@ try{
 					filterData($column[$active]);
 					$uniqueid = uniqid("FPS_",);
 					$FPS->setUniqueid(substr($uniqueid,0,15));
-					$FPS->setDistrict(ucwords(strtolower($column[$district])));
+					$FPS->setDistrict(strtoupper(trim($column[$district])));
 					$FPS->setLatitude($column[$latitude]);
 					$FPS->setLongitude($column[$longitude]);
 					$FPS->setName($column[$name]);
@@ -272,7 +272,7 @@ try{
 					filterData($column[$active]);
 					$uniqueid = uniqid("FPS_",);
 					$FPS->setUniqueid(substr($uniqueid,0,15));
-					$FPS->setDistrict($column[$district]);
+					$FPS->setDistrict(strtoupper(trim($column[$district])));
 					$FPS->setLatitude($column[$latitude]);
 					$FPS->setLongitude($column[$longitude]);
 					$FPS->setName($column[$name]);

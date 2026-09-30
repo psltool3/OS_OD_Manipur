@@ -35,16 +35,16 @@ function isValidCoordinate($value, $coordinateType) {
 
     switch ($coordinateType) {
         case 'latitude':
-            return ($coordinate >= -90 && $coordinate <= 90);
+            return ($coordinate > 0 && $coordinate < 40);
         case 'longitude':
-            return ($coordinate >= -180 && $coordinate <= 180);
+            return ($coordinate > 65 && $coordinate < 100);
         default:
             return false;
     }
 }
 
 function isStringNumber($stringValue) {
-    return is_numeric($stringValue);
+    return is_numeric($stringValue) && floatval($stringValue) >= 0;
 }
 
 // Create a new Login object and set credentials
@@ -62,13 +62,13 @@ if ($_SESSION['district_user'] != $person->getUsername()) {
 
 // Validate latitude and longitude
 if (!isValidCoordinate($_POST["latitude"], 'latitude') || !isValidCoordinate($_POST["longitude"], 'longitude')) {
-    echo "Error: Check Latitude and Longitude Value.";
+    echo "Error : Latitude must be greater than 0 less than 40 and long greater than 65 and less than 100";
     exit();
 }
 
 // Validate demand value
-if (!isStringNumber($_POST["demand"])) {
-    echo "Error: Check Demand Value of FRice.";
+if (!isStringNumber($_POST["demand"]) || floatval($_POST["demand"]) < 0) {
+    echo "Error : Demand capacity must be greater than or equal to 0. Given: " . $_POST["demand"];
     exit();
 }
 
@@ -88,9 +88,9 @@ if (
     exit();
 }
 
-// Longitude check (must be more than 65)
-if (!is_numeric($_POST["longitude"]) || $_POST["longitude"] <= 65) {
-    echo "Error : Longitude must be more than 65. Given: " . $_POST["longitude"];
+// Longitude check (must be greater than 65 and less than 100)
+if (!is_numeric($_POST["longitude"]) || floatval($_POST["longitude"]) <= 65 || floatval($_POST["longitude"]) >= 100) {
+    echo "Error : Longitude must be greater than 65 and less than 100. Given: " . $_POST["longitude"];
     exit();
 }
     
@@ -115,7 +115,7 @@ if(password_verify($person->getPassword(), $dbHashedPassword)){
     // Create a new FPS object and set its properties
     $FPS = new FPS;
     $FPS->setUniqueid($uniqueid);
-    $FPS->setDistrict($district);
+    $FPS->setDistrict(strtoupper(trim($district)));
     $FPS->setLatitude($latitude);
     $FPS->setLongitude($longitude);
     $FPS->setName($name);

@@ -138,7 +138,8 @@ require('Header.php');
 									<button id="downloadCSV" class="btn btn-warning" style="margin-bottom: 10px;" type="button">Download CSV</button>
 									<button id="downloadXLSX" class="btn btn-success" style="margin-bottom: 10px;" type="button">Download XLSX</button>
 									<button id="downloadPDF" class="btn btn-danger" style="margin-bottom: 10px;" type="button">Download PDF</button>
-									<a href="OptimisedDataAll.php"><button class="btn btn-info" style="margin-bottom: 10px;" type="button">Previous Data</button></a>
+									<a href="OptimisedDataAllLeg1.php"><button class="btn btn-info" style="margin-bottom: 10px;" type="button">Previous Data Leg1</button></a>
+									<a href="OptimisedDataAll.php"><button class="btn btn-info" style="margin-bottom: 10px;" type="button">Previous Data Leg2</button></a>
 								</div>
                             <!-- END SIMPLE DATATABLE -->
 								<div class="table-container">
@@ -360,32 +361,26 @@ require('Header.php');
 	}
 	
 	function formatNumberWithCommas(value) {
-		const formattedNumber = Number(value).toFixed(2);
+		const num = Number(value);
 
-		// Separate the integer and decimal parts
-		const parts = formattedNumber.split('.');
-		let integerPart = parts[0];
-		const decimalPart = parts[1] || '';
+		if (Number.isInteger(num)) {
+			return num.toLocaleString('en-IN');
+		}
 
-		// Add commas every two digits from the right in the integer part
-		integerPart = integerPart.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
-
-		// Combine the integer and decimal parts and return the formatted number
-		return integerPart + '.' + decimalPart;
+		return num.toLocaleString('en-IN', {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2
+		});
 	}
 	
 	function formatNumberWithCommasWithoutDecimal(value) {
-		const roundedNumber = Math.round(value);
+		const num = Number(value);
 
-		// Separate the integer and decimal parts
-		const parts = roundedNumber.toString().split('.');
-		let integerPart = parts[0];
-  
-		// Add commas every three digits from the right in the integer part
-		integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	  
-		// Return the formatted number
-		return integerPart;
+		const roundedNumber = Math.round(num * 100) / 100;
+
+		return roundedNumber.toLocaleString('en-IN', {
+			maximumFractionDigits: 0
+		});
 	}
 
 	function fetchDataFromServer(){
@@ -535,7 +530,7 @@ require('Header.php');
 				var applicable = data[0].applicable;
 				var lastUpdated = data[0].last_updated;
 
-				var resultString = "Optimised Data for Year <b>" + year + "</b> and Month <b>" + month + "</b>, Applicable for <b>" + applicable + "</b>. Last updated at <b>" + lastUpdated + "</b>";
+				var resultString = "Optimised Data for Applicable Year <b>" + year + "</b> and Applicable month for <b>" + applicable +"</b>. Last updated at <b>" + lastUpdated + "</b>";
 				document.getElementById("mainheading_big").innerHTML = resultString;
 
 

@@ -53,7 +53,7 @@ $tablename = "dcp_".$id;
 												<th style="font-size:16px">Type of FCI</th>
 												<th style="font-size:16px">Latitude</th>
 												<th style="font-size:16px">Longitude</th>
-												<th style="font-size:16px">Rice Off take(Qtl)</th>
+												<th style="font-size:16px">Total FRice Offereds(Qtl)</th>
                                             </tr>
                                         </thead>
                                         <tbody>

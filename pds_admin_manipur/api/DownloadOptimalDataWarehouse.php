@@ -12,7 +12,14 @@ if (isset($_GET['format'])) {
     $format = $_GET['format'];
     
     $columns = ["district","name","id","warehousetype","type","latitude","longitude","storage"];
-    $tablename = $_GET['tableName'];
+    $tablename = isset($_GET['tableName']) ? $_GET['tableName'] : '';
+    if (empty($tablename) || $tablename == 'warehouse_') {
+        $res_m = mysqli_query($con, "SELECT id FROM optimised_table ORDER BY id DESC LIMIT 1");
+        if ($res_m && mysqli_num_rows($res_m) > 0) {
+            $row_m = mysqli_fetch_assoc($res_m);
+            $tablename = "warehouse_".$row_m['id'];
+        }
+    }
 	
 	$tableData = array();
     array_push($tableData,$columns);

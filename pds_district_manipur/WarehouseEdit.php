@@ -314,6 +314,24 @@ else{
                 alert('Please enter all fields');
                 return false;
             }
+
+            var latVal = parseFloat(latitude);
+            if (isNaN(latVal) || latVal <= 0 || latVal >= 40) {
+                alert('Error : Latitude must be greater than 0 and less than 40. Given: ' + latitude);
+                return false;
+            }
+
+            var longVal = parseFloat(longitude);
+            if (isNaN(longVal) || longVal <= 65 || longVal >= 100) {
+                alert('Error : Longitude must be greater than 65 and less than 100. Given: ' + longitude);
+                return false;
+            }
+
+            var storageVal = parseFloat(storage);
+            if (isNaN(storageVal) || storageVal < 0) {
+                alert('Error : Storage capacity must be greater than or equal to 0. Given: ' + storage);
+                return false;
+            }
 			
             document.getElementById('popup').style.display = 'block';
         }

@@ -37,16 +37,16 @@ function isValidCoordinate($value, $coordinateType) {
     // Check if it's latitude or longitude and validate within the range
     switch ($coordinateType) {
         case 'latitude':
-            return ($coordinate >= -90 && $coordinate <= 90);
+            return ($coordinate > 0 && $coordinate < 40);
         case 'longitude':
-            return ($coordinate >= -180 && $coordinate <= 180);
+            return ($coordinate > 65 && $coordinate < 100);
         default:
             return false;
     }
 }
 
 function isStringNumber($stringValue) {
-    return is_numeric($stringValue);
+    return is_numeric($stringValue) && floatval($stringValue) >= 0;
 }
 
 $person = new Login;
@@ -63,25 +63,17 @@ $query = "SELECT * FROM login WHERE username='".$person->getUsername()."'";
 $result = mysqli_query($con,$query);
 $row = mysqli_fetch_assoc($result);
 
-
-if(!isValidCoordinate($_POST["latitude"],'latitude') or !isValidCoordinate($_POST["longitude"],'longitude')){
-	echo "Error : Check Latitude and Longitude Value";
+if(!isValidCoordinate($_POST["latitude"],'latitude')){
+	echo "Error : Latitude must be greater than 0 and less than 40. Given: " . $_POST["latitude"];
 	exit();
 }
 
-if(!isStringNumber($_POST["demand"])){
-	echo "Error : Check Off take rice Value";
+if(!isValidCoordinate($_POST["longitude"],'longitude')){
+	echo "Error : Longitude must be greater than 65 and less than 100. Given: " . $_POST["longitude"];
 	exit();
 }
 
-
-    // Latitude check (must be less than 40)
-if (!is_numeric($_POST["latitude"]) || $_POST["latitude"] >= 40) {
-    echo "Error : Latitude must be less than 40. Given: " . $_POST["latitude"];
-    exit();
-}
-
-// FPS ID check (only letters and numbers allowed)
+// FCI ID check (only letters and numbers allowed)
 if (
     !isset($_POST["id"]) ||
     !preg_match('/^[A-Za-z0-9]+$/', $_POST["id"])
@@ -90,10 +82,9 @@ if (
     exit();
 }
 
-// Longitude check (must be more than 65)
-if (!is_numeric($_POST["longitude"]) || $_POST["longitude"] <= 65) {
-    echo "Error : Longitude must be more than 65. Given: " . $_POST["longitude"];
-    exit();
+if(!isStringNumber($_POST["demand"])){
+	echo "Error : Check Total FRice Offereds Value";
+	exit();
 }
     
 
@@ -113,7 +104,7 @@ $uniqueid = uniqid("DCP_",);
 
 $DCP = new DCP;
 $DCP->setUniqueid(substr($uniqueid,0,15));
-$DCP->setDistrict(ucwords(strtolower($district)));
+$DCP->setDistrict(strtoupper(trim($district)));
 $DCP->setLatitude($latitude);
 $DCP->setLongitude($longitude);
 $DCP->setName($name);

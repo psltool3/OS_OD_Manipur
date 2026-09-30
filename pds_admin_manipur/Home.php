@@ -437,23 +437,9 @@ require('util/Logger.php');
 				<div class="col-md-3">
 					<div class="form-group">
 						<div class="col-md-2"></div>
-						<div class="col-md-9">  
-							<div class="input-group" style="width:100%;">					
-							<select class="form-control" id="year" name="year" style="border-radius:5px;font-weight:bold">
-								<option value='' style="font-weight:bold;color:#000;">Select</option>
-							</select>
-							</div>
-							<span class="help-block">Selected Year</span>
-						</div>
-					</div>
-				</div>
-				<input type="hidden" id="username" name="username" value="<?php echo $_SESSION["user"]  ?>" />
-				<div class="col-md-3">
-					<div class="form-group">
-						<div class="col-md-2"></div>
 						<div class="col-md-9">
 							<div class="input-group" style="width:100%;">				
-							<select class="form-control" id="month" name="month" style="border-radius:5px;font-weight:bold">
+							<select class="form-control" id="month" name="month" onchange="updateApplicableMonths()" style="border-radius:5px;font-weight:bold">
 								<option value='' style="font-weight:bold;color:#000;">Select</option>
 								<option value='jan' style="font-weight:bold;color:#000;">January</option>
 								<option value='feb' style="font-weight:bold;color:#000;">February</option>
@@ -469,7 +455,21 @@ require('util/Logger.php');
 								<option value='dec' style="font-weight:bold;color:#000;">December</option>
 							</select>
 							</div>
-							<span class="help-block">Selected Month</span>
+							<span class="help-block">Current Month</span>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" id="username" name="username" value="<?php echo $_SESSION["user"]  ?>" />
+				<div class="col-md-3">
+					<div class="form-group">
+						<div class="col-md-2"></div>
+						<div class="col-md-9">  
+							<div class="input-group" style="width:100%;">					
+							<select class="form-control" id="year" name="year" onchange="updateApplicableMonths()" style="border-radius:5px;font-weight:bold">
+								<option value='' style="font-weight:bold;color:#000;">Select</option>
+							</select>
+							</div>
+							<span class="help-block">Applicable Year</span>
 						</div>
 					</div>
 				</div>
@@ -876,10 +876,10 @@ require('util/Logger.php');
 		var newRow2 = table.insertRow();
 		newRow2.insertCell(0).innerHTML = data["Scenario_Baseline"];
 		newRow2.insertCell(1).innerHTML = data["WH_Used_Baseline"];
-		newRow2.insertCell(2).innerHTML = (data["FPS_Used_Baseline"]);
-		newRow2.insertCell(3).innerHTML = (data["Demand_Baseline"]);
-		newRow2.insertCell(4).innerHTML = (data["Total_QKM_Baseline"]);
-		newRow2.insertCell(5).innerHTML = (data["Average_Distance_Baseline"]);
+		newRow2.insertCell(2).innerHTML = formatNumberWithCommas(data["FPS_Used_Baseline"]);
+		newRow2.insertCell(3).innerHTML = formatNumberWithCommas(data["Demand_Baseline"]);
+		newRow2.insertCell(4).innerHTML = formatNumberWithCommas(data["Total_QKM_Baseline"]);
+		newRow2.insertCell(5).innerHTML = formatNumberWithCommas(data["Average_Distance_Baseline"]);
 
 		table.style.width = "100%";
 		table.style.padding = "20px";
@@ -968,14 +968,11 @@ require('util/Logger.php');
 	setInterval(checkServerStatus, 10000);
 	
 function formatNumberWithCommas(value) {
+		if (value === null || value === undefined || value === '') return '';
 		const num = Number(value);
-
-		if (Number.isInteger(num)) {
-			return num.toLocaleString('en-IN');
-		}
+		if (isNaN(num)) return value;
 
 		return num.toLocaleString('en-IN', {
-			minimumFractionDigits: 2,
 			maximumFractionDigits: 2
 		});
 	}
@@ -1095,6 +1092,7 @@ function formatNumberWithCommas(value) {
 							  }
 							});
 						}
+						updateApplicableMonths();
 					}
 					else{
 						applicableLength = 0;
@@ -1400,9 +1398,9 @@ function handleStateCheckboxChange() {
 				var totalDemand = Object.values(data.District_Demand).reduce((acc, demand) => acc + demand, 0);
 				var month = document.getElementById("month").value;
 
-				// Format the total demand and total capacity values with commas
-				var formattedTotalDemand = totalDemand.toLocaleString();
-				var formattedTotalCapacity = totalCapacity.toLocaleString();
+				// Format the total demand and total capacity values with commas using Indian notation
+				var formattedTotalDemand = formatNumberWithCommas(totalDemand);
+				var formattedTotalCapacity = formatNumberWithCommas(totalCapacity);
 
 				document.getElementById("totalFciDemand").innerHTML = "<span style='color: white; font-size: 14px;'>" + "Total Demand: " + formattedTotalDemand + " (Qtl)</span>";
 				document.getElementById("totalFciSupply").innerHTML = "<span style='color: white; font-size: 14px;'>" + "Total Supply: " + formattedTotalCapacity + " (Qtl)</span>";
@@ -1578,9 +1576,42 @@ function fetchLastLogin() {
         // Fetch the last login when the page loads
 window.onload = fetchLastLogin;
 
+function updateApplicableMonths() {
+	var monthNames = ['jan', 'feb', 'march', 'april', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec'];
+	var selectedMonth = document.getElementById("month").value;
+	var selectedIndex = monthNames.indexOf(selectedMonth);
+	var selectedYear = document.getElementById("year").value;
+	var actualCurrentYear = new Date().getFullYear();
+
+	monthNames.forEach(function(mName, index) {
+		var checkbox = document.getElementById(mName);
+		if (checkbox) {
+			var label = checkbox.closest ? checkbox.closest('label') : checkbox.parentElement;
+			// Only disable months prior to current month if the selected year is the current calendar year
+			if (selectedYear == actualCurrentYear && selectedIndex !== -1 && index < selectedIndex) {
+				checkbox.disabled = true;
+				checkbox.checked = false;
+				if (label) {
+					label.style.color = "#aaa";
+					label.style.cursor = "not-allowed";
+					label.style.pointerEvents = "none";
+				}
+			} else {
+				checkbox.disabled = false;
+				if (label) {
+					label.style.color = "#000";
+					label.style.cursor = "pointer";
+					label.style.pointerEvents = "auto";
+				}
+			}
+		}
+	});
+}
+
 var expanded = false;
 
 function showCheckboxes() {
+  updateApplicableMonths();
   var checkboxes = document.getElementById("checkboxes");
   if (!expanded) {
     checkboxes.style.display = "block";
@@ -1591,6 +1622,7 @@ function showCheckboxes() {
   }
 }
 var firstStart = 0;
+updateApplicableMonths();
 fetchFromDb();
 // Check for active async jobs on page load
 checkForActiveJob(CG_JOB_KEY, JOB_ENDPOINT, displayResults);

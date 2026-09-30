@@ -3,11 +3,15 @@ require('util/Connection.php');
 require('util/SessionCheck.php');
 require('Header.php');
 
-$id = $_POST['id'];
-$tablename = "warehouse_".$id;
-if (isset($_POST['step']) && $_POST['step'] == "leg1") {
-    $tablename = "warehouse_leg1_".$id;
+$id = isset($_POST['id']) ? $_POST['id'] : '';
+if (empty($id)) {
+	$res_latest = mysqli_query($con, "SELECT id FROM optimised_table ORDER BY id DESC LIMIT 1");
+	if ($res_latest && mysqli_num_rows($res_latest) > 0) {
+		$row_latest = mysqli_fetch_assoc($res_latest);
+		$id = (string)$row_latest['id'];
+	}
 }
+$tablename = "warehouse_".$id;
 
 ?>
 <style>
@@ -24,7 +28,7 @@ if (isset($_POST['step']) && $_POST['step'] == "leg1") {
 
                 <!-- START BREADCRUMB -->
                 <ul class="breadcrumb">
-                    <li><a href="<?php echo (isset($_POST['step']) && $_POST['step'] == 'leg1') ? 'OptimisedDataAllLeg1.php' : 'OptimisedDataAll.php'; ?>">Home</a></li>
+                    <li><a href="Warehouse.php">Home</a></li>
                     <li class="active">Warehouse View</li>
                 </ul>
                 <!-- END BREADCRUMB -->

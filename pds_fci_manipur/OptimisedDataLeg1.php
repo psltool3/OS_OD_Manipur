@@ -118,7 +118,6 @@ if($currentTimestamp >= $targetTimestamp) {
 <script>
 	function setSelectedValue(obj_value,valueToSet) {
 		var obj = document.getElementById(obj_value);
-		if (!obj) return;
 		for (var i = 0; i < obj.options.length; i++) {
 			if (obj.options[i].value== valueToSet) {
 				obj.options[i].selected = true;
@@ -278,7 +277,8 @@ if($currentTimestamp >= $targetTimestamp) {
 												<th style="font-size:16px">FCI Release Warehouse</th>
 												<th style="font-size:16px">Reason for not Approve</th>
 												<th style="font-size:16px">Distance (Km)</th>
-												<th style="font-size:16px">Status</th>										
+												<th style="font-size:16px">Status</th>
+													<th style="font-size:16px">Action</th>								
                                             </tr>
                                         </thead>
 										<tbody id="table_body">
@@ -400,26 +400,30 @@ if($currentTimestamp >= $targetTimestamp) {
 		}
 		
 		function enableDisable(selectedId){
-			var boolElem = document.getElementById(selectedId + "_bool");
-			if (!boolElem) return;
-			newvalue = boolElem.value;
+			newvalue = document.getElementById(selectedId + "_bool").value;
 			if(newvalue=="yes"){
 				modifiedData[selectedId] = "yes";
-				var el = document.getElementById(selectedId); if(el) el.disabled = true;
-				var elr = document.getElementById(selectedId + "_idreason"); if(elr) elr.disabled = true;
-				var eld = document.getElementById(selectedId + "_iddistance"); if(eld) { eld.value = ''; eld.disabled = true; }
+				document.getElementById(selectedId).disabled = true;
+				document.getElementById(selectedId + "_idreason").disabled = true;
+				document.getElementById(selectedId + "_iddistance").value = '';
+				document.getElementById(selectedId + "_iddistance").disabled = true;
 			}
 			else if(newvalue=="no"){
 				modifiedData[selectedId] = "no";
-				var el = document.getElementById(selectedId); if(el) { el.value = ''; el.disabled = false; }
-				var elr = document.getElementById(selectedId + "_idreason"); if(elr) { elr.value = ''; elr.disabled = false; }
-				var eld = document.getElementById(selectedId + "_iddistance"); if(eld) { eld.value = ''; eld.disabled = false; }
+				document.getElementById(selectedId).value = '';
+				document.getElementById(selectedId).disabled = false;
+				document.getElementById(selectedId + "_idreason").value = '';
+				document.getElementById(selectedId + "_idreason").disabled = false;
+				document.getElementById(selectedId + "_iddistance").value = '';
+				document.getElementById(selectedId + "_iddistance").disabled = false;
 			}
 			else{
 				modifiedData[selectedId] = "same";
-				var el = document.getElementById(selectedId); if(el) { el.value = ''; el.disabled = true; }
-				var elr = document.getElementById(selectedId + "_idreason"); if(elr) { elr.disabled = true; }
-				var eld = document.getElementById(selectedId + "_iddistance"); if(eld) { eld.value = ''; eld.disabled = true; }
+				document.getElementById(selectedId).value = '';
+				document.getElementById(selectedId).disabled = true;
+				document.getElementById(selectedId + "_idreason").disabled = true;
+				document.getElementById(selectedId + "_iddistance").value = '';
+				document.getElementById(selectedId + "_iddistance").disabled = true;
 			}
 		}
 		
@@ -433,6 +437,12 @@ if($currentTimestamp >= $targetTimestamp) {
 		
 		function handleDistanceChange(selectedId){
 			newvalue = document.getElementById(selectedId).value;
+			if (newvalue !== '' && (isNaN(newvalue) || parseFloat(newvalue) < 0)) {
+				alert("Distance must be a numeric value greater than or equal to 0.");
+				document.getElementById(selectedId).value = '';
+				delete modifiedDistanceData[selectedId];
+				return;
+			}
 			modifiedDistanceData[selectedId] = newvalue;
 			if(newvalue==''){
 				delete modifiedDistanceData[selectedId];
@@ -458,6 +468,11 @@ if($currentTimestamp >= $targetTimestamp) {
 						}
 						if(!modifiedDistanceData.hasOwnProperty(key + "_iddistance")){
 							alert("New Id " + String(value) + " distance needs to be filled");
+							return;
+						}
+						var distVal = modifiedDistanceData[key + "_iddistance"];
+						if (isNaN(distVal) || parseFloat(distVal) < 0) {
+							alert("Distance must be a numeric value greater than or equal to 0.");
 							return;
 						}
 					}
@@ -557,11 +572,16 @@ if($currentTimestamp >= $targetTimestamp) {
 							var fromidarray = resultarray.map(function(item) {
 								return item.from_id;
 							});
-							if (fromidarray.length > 0) {
-								fromidarray.forEach(function(fromId) {
+							var fromid_fromnamearray = resultarray.map(function(item) {
+								var idStr = (item.from_id !== null && item.from_id !== undefined) ? item.from_id.toString() : '';
+								var nameStr = (item.from_name !== null && item.from_name !== undefined) ? item.from_name.toString() : '';
+								return idStr + "_" + nameStr;
+							});
+							if (fromid_fromnamearray.length > 0) {
+								fromid_fromnamearray.forEach(function(fromId_fromName) {
 									var option = document.createElement("option");
-									option.text = fromId;
-									option.value = fromId;
+									option.text = fromId_fromName;
+									option.value = fromId_fromName.split('_')[0];
 									selectInput.appendChild(option);
 								});
 							}
@@ -596,13 +616,18 @@ if($currentTimestamp >= $targetTimestamp) {
 						if(result!=""){
 							var resultarray = JSON.parse(result);
 							var toidarray = resultarray.map(function(item) {
-								return item.to;
+								return item.to_id;
 							});
-							if (toidarray.length > 0) {
-								toidarray.forEach(function(toId) {
+							var toid_tonamearray = resultarray.map(function(item) {
+								var idStr = (item.to_id !== null && item.to_id !== undefined) ? item.to_id.toString() : '';
+								var nameStr = (item.to_name !== null && item.to_name !== undefined) ? item.to_name.toString() : '';
+								return idStr + "_" + nameStr;
+							});
+							if (toid_tonamearray.length > 0) {
+								toid_tonamearray.forEach(function(toId_toName) {
 									var option = document.createElement("option");
-									option.text = toId;
-									option.value = toId;
+									option.text = toId_toName;
+									option.value = toId_toName.split('_')[0];
 									selectInput.appendChild(option);
 								});
 							}
@@ -642,7 +667,6 @@ if($currentTimestamp >= $targetTimestamp) {
 					timeout: 59000,
 					success: function(result){
 						$('#table_body').empty();
-						uniqueid_bool_array = [];
 						try{
 							var resultarray = JSON.parse(result);
 							var warehousearray = resultarray["warehouse"];
@@ -707,20 +731,25 @@ if($currentTimestamp >= $targetTimestamp) {
 								}
 								
 								if(distance_admin==null || distance_admin==""){
-									var newdistance = "<td><input type='text' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
+									var newdistance = "<td><input type='number' min='0' step='any' onchange='handleDistanceChange(\"" + uniqueid_iddistance + "\")' id='" + uniqueid_iddistance + "' name='" + uniqueid_iddistance + "' disabled required /></td>";
 								}
 								else{
-									var newdistance = "<td>" + distance_admin + "</td>"
+									var newdistance = "<td>" + distance_admin + "</td>";
 								}
-								
+
 								if(reason_admin.length>0){
 									var admin_reason = "<td>" + reason_admin + "</td>";
 								}
 								else{
 									var admin_reason = "<td><select class='form-control' onchange='handleReasonChange(\"" + uniqueid_idreason + "\")' id='" + uniqueid_idreason + "' name='" + uniqueid_idreason + "' disabled><option value=''>Select</option><option value='Road not accessible'>Road not accessible</option><option value='Road repair going on'>Road repair going on</option><option value='Pertaining to Distance'>Pertaining to Distance</option></select></td>";
 								}
+
+								var isLocked = (approve_admin == "yes" || approve_admin == "no") ? "disabled" : "";
+								var save_btn = "<button class='btn btn-primary' " + isLocked + " onClick='saveRowData(\"" + uniqueid + "\")' style='margin-right:5px;'>Save</button>";
+								var reset_btn = "<button class='btn btn-warning' onClick='resetRowData(\"" + uniqueid + "\", \"" + obj[datafield]["from_id"] + "\", \"" + obj[datafield]["to_id"] + "\", \"" + obj[datafield]["commodity"] + "\")'>Reset</button>";
+								var action_btn = "<td>" + save_btn + reset_btn + "</td>";
 								
-								$('#table_body').append(subpart1 + warehouse_id_part + admin_reason + newdistance  + admin_approve + "</tr>");
+								$('#table_body').append(subpart1 + warehouse_id_part + admin_reason + newdistance  + admin_approve + action_btn + "</tr>");
 							}
 							//fetchCardDataFromServer();							
 						}
@@ -731,6 +760,103 @@ if($currentTimestamp >= $targetTimestamp) {
 				});
 			}
 		}
+		
+		function resetRowData(uniqueid, from_id, to_id, commodity) {
+			if (confirm("Are you sure you want to reset changes for this row?")) {
+				delete modifiedData[uniqueid];
+				delete modifiedReasonData[uniqueid + "_idreason"];
+				delete modifiedDistanceData[uniqueid + "_iddistance"];
+				delete modifiedIdData[uniqueid];
+				delete modifiedApproveData[uniqueid];
+				
+				$.ajax({
+					type: "POST",
+					url: "api/ResetRowDataLeg1.php",
+					data: {
+						from_id: from_id,
+						to_id: to_id,
+						commodity: commodity
+					},
+					cache: false,
+					success: function(response) {
+						try {
+							var res = JSON.parse(response);
+							if (res.status === "success") {
+								fetchDataFromServerId();
+							} else {
+								alert("Error resetting data: " + res.message);
+							}
+						} catch (e) {
+							fetchDataFromServerId();
+						}
+					},
+					error: function() {
+						alert("Failed to reset data. Please check your connection.");
+					}
+				});
+			}
+		}
+
+		function saveRowData(uniqueid) {
+			var hasChanges = false;
+			var params = {};
+			
+			var val = undefined;
+			var valKey = undefined;
+			if (modifiedData.hasOwnProperty(uniqueid)) {
+				val = modifiedData[uniqueid];
+				valKey = uniqueid;
+			} else if (modifiedData.hasOwnProperty(uniqueid + "_bool")) {
+				val = modifiedData[uniqueid + "_bool"];
+				valKey = uniqueid + "_bool";
+			}
+			
+			if (val !== undefined) {
+				params[valKey] = val;
+				hasChanges = true;
+				
+				if (val === "no") {
+					if (!modifiedData.hasOwnProperty(uniqueid)) {
+						alert("New Warehouse ID needs to be selected");
+						return;
+					}
+					if (!modifiedReasonData.hasOwnProperty(uniqueid + "_idreason")) {
+						alert("Reason needs to be selected");
+						return;
+					}
+					if (!modifiedDistanceData.hasOwnProperty(uniqueid + "_iddistance")) {
+						alert("Distance needs to be filled");
+						return;
+					}
+					var distVal = modifiedDistanceData[uniqueid + "_iddistance"];
+					if (isNaN(distVal) || parseFloat(distVal) < 0) {
+						alert("Distance must be a numeric value greater than or equal to 0.");
+						return;
+					}
+				}
+			}
+			
+			if (modifiedIdData.hasOwnProperty(uniqueid)) {
+				params[uniqueid] = modifiedIdData[uniqueid];
+				hasChanges = true;
+			}
+			if (modifiedReasonData.hasOwnProperty(uniqueid + "_idreason")) {
+				params[uniqueid + "_idreason"] = modifiedReasonData[uniqueid + "_idreason"];
+				hasChanges = true;
+			}
+			if (modifiedDistanceData.hasOwnProperty(uniqueid + "_iddistance")) {
+				params[uniqueid + "_iddistance"] = modifiedDistanceData[uniqueid + "_iddistance"];
+				hasChanges = true;
+			}
+			
+			if (!hasChanges) {
+				alert("No changes to save for this row.");
+				return;
+			}
+			
+			post(params, "api/SaveDataLeg1.php");
+		}
+
 		fetchDataFromServer();
 		
 		// Set the end time from PHP to JavaScript

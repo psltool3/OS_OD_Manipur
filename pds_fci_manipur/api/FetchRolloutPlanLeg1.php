@@ -53,7 +53,7 @@ if ($result && $result->num_rows > 0) {
 	{
 		if($row['new_id_admin']!=null or $row['new_id_admin']!=""){
 			$new_id = $row['new_id_admin'];
-			$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+			$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 			$result_warehouse = mysqli_query($con,$query_warehouse);
 			$numrows_warehouse = mysqli_num_rows($result_warehouse);
 			if($numrows_warehouse!=0){
@@ -68,7 +68,7 @@ if ($result && $result->num_rows > 0) {
 		}
 		else if(($row['new_id_district']!=null or $row['new_id_district']!="") and $row['approve_admin']=="yes"){
 			$new_id = $row['new_id_district'];
-			$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+			$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 			$result_warehouse = mysqli_query($con,$query_warehouse);
 			$numrows_warehouse = mysqli_num_rows($result_warehouse);
 			if($numrows_warehouse!=0){
@@ -95,7 +95,7 @@ if ($result && $result->num_rows > 0) {
 		$qkm_optimised = $qkm_optimised + (float)$row["quantity"] * (float)$row["distance"];
 		if($row['new_id_admin']!=null or $row['new_id_admin']!=""){
 			$new_id = $row['new_id_admin'];
-			$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+			$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 			$result_warehouse = mysqli_query($con,$query_warehouse);
 			$numrows_warehouse = mysqli_num_rows($result_warehouse);
 			if($numrows_warehouse!=0){
@@ -110,7 +110,7 @@ if ($result && $result->num_rows > 0) {
 		}
 		else if(($row['new_id_district']!=null or $row['new_id_district']!="") and $row['approve_admin']=="yes"){
 			$new_id = $row['new_id_district'];
-			$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+			$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 			$result_warehouse = mysqli_query($con,$query_warehouse);
 			$numrows_warehouse = mysqli_num_rows($result_warehouse);
 			if($numrows_warehouse!=0){

@@ -438,11 +438,11 @@ require('util/Logger.php');
 						<div class="col-md-2"></div>
 						<div class="col-md-9">  
 							<div class="input-group" style="width:100%;">					
-							<select class="form-control" id="year" name="year" style="border-radius:5px;font-weight:bold">
+							<select class="form-control" id="year" name="year" onchange="updateApplicableMonths()" style="border-radius:5px;font-weight:bold">
 								<option value='' style="font-weight:bold;color:#000;">Select</option>
 							</select>
 							</div>
-							<span class="help-block">Selected Year</span>
+							<span class="help-block">Applicable Year</span>
 						</div>
 					</div>
 				</div>
@@ -452,11 +452,11 @@ require('util/Logger.php');
 						<div class="col-md-2"></div>
 						<div class="col-md-9">
 							<div class="input-group" style="width:100%;">				
-							<select class="form-control" id="month" name="month" style="border-radius:5px;font-weight:bold">
+							<select class="form-control" id="month" name="month" onchange="updateApplicableMonths()" style="border-radius:5px;font-weight:bold">
 								<option value='' style="font-weight:bold;color:#000;">Select</option>
 							</select>
 							</div>
-							<span class="help-block">Selected Month</span>
+							<span class="help-block">Current Month</span>
 						</div>
 					</div>
 				</div>
@@ -762,12 +762,12 @@ require('util/Logger.php');
 		thead.appendChild(headerRow); table.appendChild(thead);
 		var r1 = table.insertRow();
 		r1.insertCell(0).innerHTML = data["Scenario"]; r1.insertCell(1).innerHTML = data["WH_Used"];
-		r1.insertCell(2).innerHTML = data["FPS_Used"]; r1.insertCell(3).innerHTML = formatNumberWithCommas(data["Demand"]);
+		r1.insertCell(2).innerHTML = formatNumberWithCommas(data["FPS_Used"]); r1.insertCell(3).innerHTML = formatNumberWithCommas(data["Demand"]);
 		r1.insertCell(4).innerHTML = formatNumberWithCommas(data["Total_QKM"]); r1.insertCell(5).innerHTML = formatNumberWithCommas(data["Average_Distance"]);
 		var r2 = table.insertRow();
 		r2.insertCell(0).innerHTML = data["Scenario_Baseline"]; r2.insertCell(1).innerHTML = data["WH_Used_Baseline"];
-		r2.insertCell(2).innerHTML = data["FPS_Used_Baseline"]; r2.insertCell(3).innerHTML = data["Demand_Baseline"];
-		r2.insertCell(4).innerHTML = data["Total_QKM_Baseline"]; r2.insertCell(5).innerHTML = data["Average_Distance_Baseline"];
+		r2.insertCell(2).innerHTML = formatNumberWithCommas(data["FPS_Used_Baseline"]); r2.insertCell(3).innerHTML = formatNumberWithCommas(data["Demand_Baseline"]);
+		r2.insertCell(4).innerHTML = formatNumberWithCommas(data["Total_QKM_Baseline"]); r2.insertCell(5).innerHTML = formatNumberWithCommas(data["Average_Distance_Baseline"]);
 		table.style.width = "100%"; table.style.padding = "20px"; table.style.marginBottom = "50px";
 		table.style.fontSize = "20px"; table.style.marginLeft = "20px"; table.style.color = "black"; table.style.textAlign = "center";
 		var ths = table.getElementsByTagName('th'); for (var i = 0; i < ths.length; i++) { ths[i].style.fontSize = "20px"; }
@@ -833,14 +833,11 @@ require('util/Logger.php');
 	setInterval(checkServerStatus, 10000);
 	
 function formatNumberWithCommas(value) {
+		if (value === null || value === undefined || value === '') return '';
 		const num = Number(value);
-
-		if (Number.isInteger(num)) {
-			return num.toLocaleString('en-IN');
-		}
+		if (isNaN(num)) return value;
 
 		return num.toLocaleString('en-IN', {
-			minimumFractionDigits: 2,
 			maximumFractionDigits: 2
 		});
 	}
@@ -1249,8 +1246,11 @@ function handleStateCheckboxChange() {
 				var totalDemand = Object.values(data.District_Demand).reduce((acc, demand) => acc + demand, 0);
 				var month = document.getElementById("month").value;
 
-				document.getElementById("totalFciDemand").innerHTML = "<span style='color: white; font-size: 14px;'>" + "Total Demand: " + totalDemand + " (Qtl)</span>";
-				document.getElementById("totalFciSupply").innerHTML = "<span style='color: white; font-size: 14px;'>" + "Total Supply: " + totalCapacity + " (Qtl)</span>";
+				var formattedTotalDemand = formatNumberWithCommas(totalDemand);
+				var formattedTotalCapacity = formatNumberWithCommas(totalCapacity);
+
+				document.getElementById("totalFciDemand").innerHTML = "<span style='color: white; font-size: 14px;'>" + "Total Demand: " + formattedTotalDemand + " (Qtl)</span>";
+				document.getElementById("totalFciSupply").innerHTML = "<span style='color: white; font-size: 14px;'>" + "Total Supply: " + formattedTotalCapacity + " (Qtl)</span>";
 				document.getElementById("selectedMonth").innerHTML = "<span style='color: white; font-size: 14px;'>" + "Selected Month: " + capitalizeFirstLetter(month) + "</span>";
 
 
@@ -1349,7 +1349,7 @@ currentYearOption.textContent = currentYear;
 currentYearOption.style.fontWeight = "bold";
 currentYearOption.style.color = "#000";
 dropdown_year.appendChild(currentYearOption);
-currentYearOption.selected = false; 
+currentYearOption.selected = true; 
  
 const nextYearOption = document.createElement("option");
 nextYearOption.value = nextYear;
@@ -1357,7 +1357,7 @@ nextYearOption.textContent = nextYear;
 nextYearOption.style.fontWeight = "bold";
 nextYearOption.style.color = "#000";
 dropdown_year.appendChild(nextYearOption);
-nextYearOption.selected = true
+nextYearOption.selected = false;
 
 var dropdown = document.getElementById("month");
 var option = document.createElement('option');
@@ -1369,7 +1369,8 @@ dropdown.options[1].selected = true;
 fetchApplicableMonth(currentMonthValue);
 
 function fetchApplicableMonth(month){
-	var datastring = "month=" + month;
+	var year = document.getElementById('year').value;
+	var datastring = "month=" + month + "&year=" + year;
 	$.ajax({
 		type: "POST",
 		url: "api/fetchTableDataAllMonth.php",
@@ -1406,6 +1407,7 @@ function fetchApplicableMonth(month){
 					}
 				});
 			});
+			updateApplicableMonths();
 			document.getElementById("processingPopup").style.display = "none";
 			fetchFromDb();
 		}
@@ -1420,15 +1422,13 @@ function fetchApplicableMonth(month){
 document.getElementById('month').addEventListener('change', function() {
     var selectedMonth = this.value; // Get the selected month value
 	fetchApplicableMonth(selectedMonth);
+	updateApplicableMonths();
 });
 
-var dropdown = document.getElementById('year');
-for (var i = 0; i < dropdown.options.length; i++) {
-    if (dropdown.options[i].value == currentYear) {
-        dropdown.options[i].selected = true;
-        break;
-    }
-}
+document.getElementById('year').addEventListener('change', function() {
+	var selectedMonth = document.getElementById('month').value;
+	fetchApplicableMonth(selectedMonth);
+});
 
 var dropdown = document.getElementById('type');
 var currentType = "inter"
@@ -1439,9 +1439,42 @@ for (var i = 0; i < dropdown.options.length; i++) {
     }
 }
 
+function updateApplicableMonths() {
+	var monthNames = ['jan', 'feb', 'march', 'april', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec'];
+	var selectedMonth = document.getElementById("month").value;
+	var selectedIndex = monthNames.indexOf(selectedMonth);
+	var selectedYear = document.getElementById("year").value;
+	var actualCurrentYear = new Date().getFullYear();
+
+	monthNames.forEach(function(mName, index) {
+		var checkbox = document.getElementById(mName);
+		if (checkbox) {
+			var label = checkbox.closest ? checkbox.closest('label') : checkbox.parentElement;
+			// Only disable months prior to current month if the selected year is the current calendar year
+			if (selectedYear == actualCurrentYear && selectedIndex !== -1 && index < selectedIndex) {
+				checkbox.disabled = true;
+				checkbox.checked = false;
+				if (label) {
+					label.style.color = "#aaa";
+					label.style.cursor = "not-allowed";
+					label.style.pointerEvents = "none";
+				}
+			} else {
+				checkbox.disabled = false;
+				if (label) {
+					label.style.color = "#000";
+					label.style.cursor = "pointer";
+					label.style.pointerEvents = "auto";
+				}
+			}
+		}
+	});
+}
+
 var expanded = false;
 
 function showCheckboxes() {
+  updateApplicableMonths();
   var checkboxes = document.getElementById("checkboxes");
   if (!expanded) {
     checkboxes.style.display = "block";
@@ -1452,6 +1485,7 @@ function showCheckboxes() {
   }
 }
 var firstStart = 0;
+updateApplicableMonths();
 // Check for active async jobs on page load
 checkForActiveJob(CG_JOB_KEY, JOB_ENDPOINT, displayResults);
 

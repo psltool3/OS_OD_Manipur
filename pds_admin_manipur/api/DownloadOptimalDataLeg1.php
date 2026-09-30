@@ -46,13 +46,12 @@ if (isset($_GET['format'])) {
 	}
 
 	$tablename = "optimiseddata_leg1_".$id;
-	$approved_filter = "approve_admin='yes' AND status='implemented'";
-	$query = "SELECT * FROM ".$tablename." WHERE ".$approved_filter;
+	$query = "SELECT * FROM ".$tablename." WHERE 1";
 	if($district!="" and $district!="all"){
-		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND ".$approved_filter;
+		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district'";
 	}
     $result = mysqli_query($con,$query);
-    $numrows = mysqli_num_rows($result);
+    $numrows = $result ? mysqli_num_rows($result) : 0;
     $tableData = array();
 	$tableData_pdf = array();
     array_push($tableData,$columns);
@@ -62,7 +61,7 @@ if (isset($_GET['format'])) {
         while($row = mysqli_fetch_array($result)){
 			if($row['new_id_admin']!=null and $row['new_id_admin']!="" and $row['new_id_admin']!="0"){
 				$new_id = $row['new_id_admin'];
-				$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+				$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 				$result_warehouse = mysqli_query($con,$query_warehouse);
 				$numrows_warehouse = mysqli_num_rows($result_warehouse);
 				if($numrows_warehouse!=0){
@@ -77,7 +76,7 @@ if (isset($_GET['format'])) {
 			}
 			else if(($row['new_id_district']!=null and $row['new_id_district']!="" and $row['new_id_district']!="0") and ($row['approve_admin']=="yes" or $row['admin_approve']=="yes")){
 				$new_id = $row['new_id_district'];
-				$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+				$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 				$result_warehouse = mysqli_query($con,$query_warehouse);
 				$numrows_warehouse = mysqli_num_rows($result_warehouse);
 				if($numrows_warehouse!=0){

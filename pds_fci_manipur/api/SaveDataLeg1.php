@@ -53,7 +53,7 @@ foreach ($_POST as $key => $value) {
 		$query = "UPDATE " . $tablename . " SET approve_admin='', new_id_admin='' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
 	}
 	else{
-		$query_name = "SELECT name FROM warehouse_leg1_".$id." WHERE id='$value'";
+		$query_name = "SELECT name FROM dcp WHERE id='$value'";
 		$result_name = mysqli_query($con,$query_name);
 		$row_name = $result_name ? mysqli_fetch_assoc($result_name) : null;
 		$name = isset($row_name['name']) ? $row_name['name'] : '';

@@ -25,21 +25,24 @@ function formatName($name) {
 }
 
 function isValidCoordinate($value, $coordinateType) {
-    // Check if the value is a number
     if (!is_numeric($value)) {
         return false;
     }
 
-    // Convert to float
     $coordinate = floatval($value);
 
-    // Validate latitude and longitude
-    return ($coordinateType === 'latitude' && $coordinate >= -90 && $coordinate <= 90) ||
-           ($coordinateType === 'longitude' && $coordinate >= -180 && $coordinate <= 180);
+    switch ($coordinateType) {
+        case 'latitude':
+            return ($coordinate > 0 && $coordinate < 40);
+        case 'longitude':
+            return ($coordinate > 65 && $coordinate < 100);
+        default:
+            return false;
+    }
 }
 
 function isStringNumber($stringValue) {
-    return is_numeric($stringValue);
+    return is_numeric($stringValue) && floatval($stringValue) >= 0;
 }
 
 // Create a new Login object and set credentials
@@ -67,19 +70,19 @@ if (!password_verify($person->getPassword(), $row['password'])) {
 
 // Validate latitude and longitude
 if (!isValidCoordinate($_POST["latitude"], 'latitude') || !isValidCoordinate($_POST["longitude"], 'longitude')) {
-    echo "Error: Check Latitude and Longitude Value.";
+    echo "Error : Latitude must be greater than 0 less than 40 and long greater than 65 and less than 100";
     exit();
 }
 
 // Validate storage value
-if (!isStringNumber($_POST["storage"])) {
-    echo "Error: Check Storage Value.";
+if (!isStringNumber($_POST["storage"]) || floatval($_POST["storage"]) < 0) {
+    echo "Error : Storage capacity must be greater than or equal to 0. Given: " . $_POST["storage"];
     exit();
 }
 
 
     // Latitude check (must be greater than 0 and less than 40)
-if (!is_numeric($_POST["latitude"]) || floatval($_POST["latitude"]) <= 0 || $_POST["latitude"] >= 40) {
+if (!is_numeric($_POST["latitude"]) || floatval($_POST["latitude"]) <= 0 || floatval($_POST["latitude"]) >= 40) {
     echo "Error : Latitude must be greater than 0 and less than 40. Given: " . $_POST["latitude"];
     exit();
 }
@@ -93,9 +96,9 @@ if (
     exit();
 }
 
-// Longitude check (must be more than 65)
-if (!is_numeric($_POST["longitude"]) || $_POST["longitude"] <= 65) {
-    echo "Error : Longitude must be more than 65. Given: " . $_POST["longitude"];
+// Longitude check (must be greater than 65 and less than 100)
+if (!is_numeric($_POST["longitude"]) || floatval($_POST["longitude"]) <= 65 || floatval($_POST["longitude"]) >= 100) {
+    echo "Error : Longitude must be greater than 65 and less than 100. Given: " . $_POST["longitude"];
     exit();
 }
     
@@ -114,7 +117,7 @@ $active = $_POST["active"];
 
 $Warehouse = new Warehouse;
 $Warehouse->setUniqueid($uniqueid);
-$Warehouse->setDistrict($district);
+$Warehouse->setDistrict(strtoupper(trim($district)));
 $Warehouse->setLatitude($latitude);
 $Warehouse->setLongitude($longitude);
 $Warehouse->setName($name);

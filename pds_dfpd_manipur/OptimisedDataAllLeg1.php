@@ -57,8 +57,24 @@ require('Header.php');
                             <!-- START SIMPLE DATATABLE -->
                             <div class="panel panel-default">
 								<div class="panel-heading">                                
-                                    <h3 class="panel-title">Data</h3> 
+                                    <h3 class="panel-title" style="display:inline-block">Data</h3>
+									<div style="float:right">
+										<label style="margin-right:5px;font-weight:bold;font-size:14px">Select Year:</label>
+										<select id="yearFilter" class="form-control" style="width:auto;display:inline-block;height:30px;padding:2px 10px;" onchange="filterByYear()">
+											<option value="all">All Years</option>
+											<?php
+											$years_query = "SELECT DISTINCT year FROM optimised_table_leg1 WHERE year IS NOT NULL AND year != '' ORDER BY year DESC";
+											$years_result = mysqli_query($con, $years_query);
+											if($years_result){
+												while($y_row = mysqli_fetch_assoc($years_result)){
+													echo "<option value='{$y_row['year']}'>{$y_row['year']}</option>";
+												}
+											}
+											?>
+										</select>
+									</div>
                                 </div>
+								<!-- <button class='btn btn-success' style="float:right;margin-top:10px;margin-right:13px" onclick="send_all('all')">Send Email to All</button> -->
 								<div class="panel-body">
                                  <div class="table-responsive">
                                     <table id="export_table" class="table">
@@ -86,7 +102,7 @@ require('Header.php');
 											 "<td>{$row['month']}</td>".
 											 "<td>{$row['applicable']}</td>".
 											 "<td> <button class='btn btn-info btn-rounded' onclick=\"warehouse_open('{$temp_id}')\">View Warehouses</button></td>".
-              								 "<td> <button class='btn btn-warning btn-rounded' onclick=\"fps_open('{$temp_id}')\">View FCI</button></td>".
+              								 "<td> <button class='btn btn-warning btn-rounded' onclick=\"fci_open('{$temp_id}')\">View FCI</button></td>".
               								 "<td> <button class='btn btn-danger btn-rounded' onclick=\"optimised_open('{$temp_id}')\">View Data</button></td>".
 											 "<td> <button class='btn btn-success btn-rounded' onclick=\"generate_report('{$temp_id}')\">View Report</button></td></tr>";
               							}
@@ -94,6 +110,37 @@ require('Header.php');
 										?>
                                         </tbody>
                                     </table>
+									<div id="popup" class="popup" style="display:none">
+										<a class="close" onclick="hidePopup()" style="font-size:25px">×</a>
+										</br></br>
+										
+										<div class="col-md-6">
+											<div class="form-group">
+                                                <label class="col-md-3 control-label">Username*</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-info"></span></span>
+                                                        <input type="text" class="form-control" id="username" name="username" required />
+                                                    </div>
+                                                    <span class="help-block">Username</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+											<div class="form-group">
+                                                <label class="col-md-3 control-label">Password*</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="fa fa-info"></span></span>
+                                                        <input type="password" class="form-control" id="password" name="password" required />
+                                                    </div>
+                                                    <span class="help-block">Password</span>
+                                                </div>
+                                            </div>
+                                        </div>
+										
+										<center><button class="btn btn-primary" type="button" onClick="proceed()">Verify</button></center>
+								</div>
                                   </div>
                                 </div>
                             </div>
@@ -110,7 +157,7 @@ require('Header.php');
         <!-- END PAGE CONTAINER -->       
         
        
-         
+        
     <!-- START SCRIPTS -->
         <!-- START PLUGINS -->
         <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
@@ -134,6 +181,10 @@ require('Header.php');
         <script type="text/javascript" src="js/actions.js"></script>
         <!-- END PAGE PLUGINS -->
 
+        <!-- START TEMPLATE -->      
+        
+        <!-- END TEMPLATE -->
+
 		<script>
 		var methodCalled = "";
 		var uidCalled = "";
@@ -145,6 +196,7 @@ require('Header.php');
 			var form = document.createElement("form");
 			form.setAttribute("method", method);
 			form.setAttribute("action", path);
+			//form.setAttribute("target", "_blank");
 
 			for(var key in params) {
 				if(params.hasOwnProperty(key)) {
@@ -162,20 +214,72 @@ require('Header.php');
 		}
 
 		function warehouse_open(temp_id){
-			post({id:temp_id,step:"leg1"} ,"WarehouseView.php");
+			post({id:temp_id,step:"leg1"} ,"WarehouseViewLeg1.php");
 		}
 		
-		function fps_open(temp_id){
-			post({id:temp_id,step:"leg1"} ,"FPSView.php");
+		function fci_open(temp_id){
+			post({id:temp_id,step:"leg1"} ,"FciViewLeg1.php");
 		}
 		
 		function optimised_open(temp_id){
-			post({id:temp_id,step:"leg1"} ,"OptimisedDataView.php");
+			post({id:temp_id,step:"leg1"} ,"OptimisedDataViewLeg1.php");
+		}
+
+		function generate_report(temp_id){
+			post({id:temp_id,step:"leg1"} ,"GenerateDataViewLeg1.php");
+		}
+
+		function filterByYear(){
+			var selectedYear = document.getElementById('yearFilter').value;
+			var rows = document.querySelectorAll('#table_body tr');
+			rows.forEach(function(row){
+				var rowYear = row.children[0].textContent.trim();
+				if(selectedYear === 'all' || rowYear === selectedYear){
+					row.style.display = '';
+				} else {
+					row.style.display = 'none';
+				}
+			});
 		}
 		
-		function generate_report(temp_id){
-			post({id:temp_id,step:"leg1"} ,"GenerateDataView.php");
+		function send_email(temp_id){	
+			document.getElementById('popup').style.display = 'block';
+			uidCalled = temp_id;
 		}
+		
+		function send_all(temp_id){	
+			document.getElementById('popup').style.display = 'block';
+			uidCalled = temp_id;
+		}
+		
+		function proceed(){
+			var username = document.getElementById('username').value;
+			var password = document.getElementById('password').value;
+			post({username:username,password:password,uid:uidCalled} ,"api/SendEmail.php");
+		}
+		
+		function showPopup() {
+            
+			var name = document.getElementById('name').value;
+            var type = document.getElementById('type').value;
+			var latitude = document.getElementById('latitude').value;
+            var longitude = document.getElementById('longitude').value;
+			var id = document.getElementById('id').value;
+            var demand = document.getElementById('demand').value;
+            var district = document.getElementById('district').value;
+
+            if (name === '' || type === '' || latitude === '' || longitude === '' || id === '' || demand === '' || district === '') {
+                alert('Please enter all fields');
+                return false;
+            }
+			
+            document.getElementById('popup').style.display = 'block';
+        }
+		
+		function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+		
 		
 		</script>	
     </body>

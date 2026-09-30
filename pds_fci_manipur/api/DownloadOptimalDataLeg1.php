@@ -61,7 +61,7 @@ if (isset($_GET['format'])) {
         while($row = mysqli_fetch_array($result)){
 			if($row['new_id_admin']!=null and $row['new_id_admin']!="" and $row['new_id_admin']!="0"){
 				$new_id = $row['new_id_admin'];
-				$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+				$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 				$result_warehouse = mysqli_query($con,$query_warehouse);
 				$numrows_warehouse = $result_warehouse ? mysqli_num_rows($result_warehouse) : 0;
 				if($numrows_warehouse!=0){
@@ -76,7 +76,7 @@ if (isset($_GET['format'])) {
 			}
 			else if(($row['new_id_district']!=null and $row['new_id_district']!="" and $row['new_id_district']!="0") and (isset($row['approve_admin']) && $row['approve_admin']=="yes" or isset($row['admin_approve']) && $row['admin_approve']=="yes")){
 				$new_id = $row['new_id_district'];
-				$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
+				$query_warehouse = "SELECT latitude,longitude,district FROM dcp WHERE id='$new_id'";
 				$result_warehouse = mysqli_query($con,$query_warehouse);
 				$numrows_warehouse = $result_warehouse ? mysqli_num_rows($result_warehouse) : 0;
 				if($numrows_warehouse!=0){

@@ -6,82 +6,143 @@ require '../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-
-// Check if format is specified in GET request
 if (isset($_GET['format'])) {
     $format = $_GET['format'];
     
-    $columns = ["scenario","from","from_state","from_id","from_name","from_district","from_lat","from_long","to","to_state","to_id","to_name","to_district","to_lat","to_long","commodity","quantity","distance","status"];
-    $month = $_GET['month'];
-	$district = $_GET['district'];
-	$parts = explode('_', $month);
+    $columns = ["scenario","from","from_state","from_id","from_name","from_district","from_lat","from_long","to","to_state","to_id","to_name","to_district","to_lat","to_long","commodity","quantity","distance"];
+	
+    $tablename = isset($_GET['tableName']) ? $_GET['tableName'] : '';
+    $tablename1 = isset($_GET['tableName1']) ? $_GET['tableName1'] : '';
+    $district = isset($_GET['district']) ? $_GET['district'] : '';
 
-	$month = $parts[0];
-	$year = $parts[1]; 
-	$query = "SELECT * FROM optimised_table_leg1 WHERE month='$month' AND year='$year'";
-	$result = mysqli_query($con,$query);
-	$numrow = mysqli_num_rows($result);
-	$id = "";
-	if($numrow>0){
-		$row = mysqli_fetch_assoc($result);
-		$id = $row['id'];
-	}
+    if (empty($tablename) && isset($_GET['month'])) {
+        $month_param = $_GET['month'];
+        $parts = explode('_', $month_param);
+        $m_name = isset($parts[0]) ? $parts[0] : '';
+        $m_year = isset($parts[1]) ? $parts[1] : '';
+        $query_m = "SELECT * FROM optimised_table_leg1 WHERE month='$m_name' AND year='$m_year'";
+        $res_m = mysqli_query($con, $query_m);
+        if ($res_m && mysqli_num_rows($res_m) > 0) {
+            $row_m = mysqli_fetch_assoc($res_m);
+            $tablename = "optimiseddata_leg1_".$row_m['id'];
+            $tablename1 = $tablename;
+        }
+    }
 
-	$tablename = "optimiseddata_leg1_".$id;
-	$approved_filter = "approve_admin='yes' AND status='implemented'";
-	$query = "SELECT * FROM ".$tablename." WHERE ".$approved_filter;
-	if($district!="" and $district!="all"){
-		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND ".$approved_filter;
-	}
-    $result = mysqli_query($con,$query);
-    $numrows = mysqli_num_rows($result);
-    $tableData = array();
-    array_push($tableData,$columns);
-
-    if($numrows>0){
-        while($row = mysqli_fetch_array($result)){
-			if($row['new_id_admin']!=null or $row['new_id_admin']!=""){
-				$new_id = $row['new_id_admin'];
-				$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
-				$result_warehouse = mysqli_query($con,$query_warehouse);
-				$numrows_warehouse = mysqli_num_rows($result_warehouse);
-				if($numrows_warehouse!=0){
-					$row_warehouse = mysqli_fetch_assoc($result_warehouse);
-					$row["from_lat"] = $row_warehouse['latitude'];
-					$row["from_long"] = $row_warehouse['longitude'];
-					$row["from_district"] = $row_warehouse['district'];
-				}
-				$row["from_id"] = $row['new_id_admin'];
-				$row["from_name"] = $row['new_name_admin'];
-				$row["distance"] = $row['new_distance_admin'];
-			}
-			else if(($row['new_id_district']!=null or $row['new_id_district']!="") and $row['admin_approve']=="yes"){
-				$new_id = $row['new_id_district'];
-				$query_warehouse = "SELECT latitude,longitude,district FROM warehouse_leg1_".$id." WHERE id='$new_id'";
-				$result_warehouse = mysqli_query($con,$query_warehouse);
-				$numrows_warehouse = mysqli_num_rows($result_warehouse);
-				if($numrows_warehouse!=0){
-					$row_warehouse = mysqli_fetch_assoc($result_warehouse);
-					$row["from_lat"] = $row_warehouse['latitude'];
-					$row["from_long"] = $row_warehouse['longitude'];
-					$row["from_district"] = $row_warehouse['district'];
-				}
-				$row["from_id"] = $row['new_id_district'];
-				$row["from_name"] = $row['new_name_district'];
-				$row["distance"] = $row['new_distance_district'];
-			}
-            $temp = array();
-            for($i=0;$i<count($columns);$i++){
-                array_push($temp,$row[$columns[$i]]);
+    if (empty($tablename) || $tablename == 'optimiseddata_leg1_') {
+        $res_m = mysqli_query($con, "SELECT id FROM optimised_table_leg1 ORDER BY id DESC LIMIT 1");
+        if ($res_m && mysqli_num_rows($res_m) > 0) {
+            $row_m = mysqli_fetch_assoc($res_m);
+            $tablename = "optimiseddata_leg1_".$row_m['id'];
+            if (empty($tablename1) || $tablename1 == 'optimiseddata_leg1_') {
+                $tablename1 = $tablename;
             }
-            array_push($tableData,$temp);
+        }
+    }
+
+	$tableData = array();
+    array_push($tableData, $columns);
+
+    if (!empty($tablename)) {
+        $query = "SELECT * FROM ".$tablename." WHERE 1";
+        if (!empty($district) && $district != "all") {
+            $district_escaped = mysqli_real_escape_string($con, $district);
+            $query = "SELECT * FROM ".$tablename." WHERE to_district='".$district_escaped."'";
+        }
+        $result = mysqli_query($con, $query);
+        $numrows = $result ? mysqli_num_rows($result) : 0;
+        
+        if($numrows > 0){
+            while($row = mysqli_fetch_array($result)){
+                if(isset($row['new_id_admin']) && !empty($row['new_id_admin'])){
+                    $new_id = $row['new_id_admin'];
+                    $query_warehouse = "SELECT latitude,longitude,district FROM warehouse WHERE id='$new_id'";
+                    $result_warehouse = mysqli_query($con, $query_warehouse);
+                    if($result_warehouse && mysqli_num_rows($result_warehouse) != 0){
+                        $row_warehouse = mysqli_fetch_assoc($result_warehouse);
+                        $row["from_lat"] = $row_warehouse['latitude'];
+                        $row["from_long"] = $row_warehouse['longitude'];
+                        $row["from_district"] = $row_warehouse['district'];
+                    }
+                    $row["from_id"] = $row['new_id_admin'];
+                    $row["from_name"] = $row['new_name_admin'];
+                    $row["distance"] = $row['new_distance_admin'];
+                }
+                else if(isset($row['new_id_district']) && !empty($row['new_id_district']) && (isset($row['approve_admin']) && $row['approve_admin']=="yes" || isset($row['admin_approve']) && $row['admin_approve']=="yes")){
+                    $new_id = $row['new_id_district'];
+                    $query_warehouse = "SELECT latitude,longitude,district FROM warehouse WHERE id='$new_id'";
+                    $result_warehouse = mysqli_query($con, $query_warehouse);
+                    if($result_warehouse && mysqli_num_rows($result_warehouse) != 0){
+                        $row_warehouse = mysqli_fetch_assoc($result_warehouse);
+                        $row["from_lat"] = $row_warehouse['latitude'];
+                        $row["from_long"] = $row_warehouse['longitude'];
+                        $row["from_district"] = $row_warehouse['district'];
+                    }
+                    $row["from_id"] = $row['new_id_district'];
+                    $row["from_name"] = $row['new_name_district'];
+                    $row["distance"] = $row['new_distance_district'];
+                }
+                $temp = array();
+                for($i=0; $i<count($columns); $i++){
+                    $colKey = $columns[$i];
+                    array_push($temp, isset($row[$colKey]) ? $row[$colKey] : '');
+                }
+                array_push($tableData, $temp);
+            }
+        }
+    }
+
+    if (!empty($tablename1) && $tablename1 != $tablename) {
+        $query1 = "SELECT * FROM ".$tablename1." WHERE 1";
+        if (!empty($district) && $district != "all") {
+            $district_escaped = mysqli_real_escape_string($con, $district);
+            $query1 = "SELECT * FROM ".$tablename1." WHERE to_district='".$district_escaped."'";
+        }
+        $result1 = mysqli_query($con, $query1);
+        $numrows1 = $result1 ? mysqli_num_rows($result1) : 0;
+        
+        if($numrows1 > 0){
+            while($row = mysqli_fetch_array($result1)){
+                if(isset($row['new_id_admin']) && !empty($row['new_id_admin'])){
+                    $new_id = $row['new_id_admin'];
+                    $query_warehouse = "SELECT latitude,longitude,district FROM warehouse WHERE id='$new_id'";
+                    $result_warehouse = mysqli_query($con, $query_warehouse);
+                    if($result_warehouse && mysqli_num_rows($result_warehouse) != 0){
+                        $row_warehouse = mysqli_fetch_assoc($result_warehouse);
+                        $row["from_lat"] = $row_warehouse['latitude'];
+                        $row["from_long"] = $row_warehouse['longitude'];
+                        $row["from_district"] = $row_warehouse['district'];
+                    }
+                    $row["from_id"] = $row['new_id_admin'];
+                    $row["from_name"] = $row['new_name_admin'];
+                    $row["distance"] = $row['new_distance_admin'];
+                }
+                else if(isset($row['new_id_district']) && !empty($row['new_id_district']) && (isset($row['approve_admin']) && $row['approve_admin']=="yes" || isset($row['admin_approve']) && $row['admin_approve']=="yes")){
+                    $new_id = $row['new_id_district'];
+                    $query_warehouse = "SELECT latitude,longitude,district FROM warehouse WHERE id='$new_id'";
+                    $result_warehouse = mysqli_query($con, $query_warehouse);
+                    if($result_warehouse && mysqli_num_rows($result_warehouse) != 0){
+                        $row_warehouse = mysqli_fetch_assoc($result_warehouse);
+                        $row["from_lat"] = $row_warehouse['latitude'];
+                        $row["from_long"] = $row_warehouse['longitude'];
+                        $row["from_district"] = $row_warehouse['district'];
+                    }
+                    $row["from_id"] = $row['new_id_district'];
+                    $row["from_name"] = $row['new_name_district'];
+                    $row["distance"] = $row['new_distance_district'];
+                }
+                $temp = array();
+                for($i=0; $i<count($columns); $i++){
+                    $colKey = $columns[$i];
+                    array_push($temp, isset($row[$colKey]) ? $row[$colKey] : '');
+                }
+                array_push($tableData, $temp);
+            }
         }
     }
     
-    // Filename for the downloaded file
-    $filename = 'table_data';
+    $filename = 'optimised_data_leg1';
 
-    // Set headers for the chosen format
     switch ($format) {
         case 'csv':
             header('Content-Type: text/csv');
@@ -90,18 +151,15 @@ if (isset($_GET['format'])) {
             break;
 
         case 'xlsx':
-            // Create a new PhpSpreadsheet object
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
 
-            // Set column names as the first row
-            /*$columnIndex = 1;
+            $columnIndex = 1;
             foreach ($columns as $columnName) {
                 $sheet->setCellValueByColumnAndRow($columnIndex, 1, $columnName);
                 $columnIndex++;
-            }*/
+            }
 
-            // Insert data tableData
             $rowIndex = 1;
             foreach ($tableData as $rowData) {
                 $columnIndex = 1;
@@ -112,7 +170,6 @@ if (isset($_GET['format'])) {
                 $rowIndex++;
             }
 
-
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
             header('Cache-Control: max-age=0');
@@ -122,27 +179,33 @@ if (isset($_GET['format'])) {
             break;
 
         case 'pdf':
-            require('fpdf/fpdf.php');
-
-            $pdf = new FPDF();
-            $pdf->AddPage();
-            $pdf->SetFont('Arial', 'B', 0);
-
-            // Highlight the first row as header
-            $pdf->SetFillColor(200, 220, 255); // Set background color
-            $pdf->SetTextColor(0); // Reset text color
-            $case = 0;
-            foreach ($tableData as $row) {
-                foreach ($row as $col) {
-                    $pdf->Cell(30, 10, $col, 1, 0, 'C', true);
-                }
-                $pdf->Ln();
-                $pdf->SetFillColor(255, 255, 255); 
+            if (file_exists('fpdf/fpdf.php')) {
+                require('fpdf/fpdf.php');
+            } else if (file_exists('../fpdf/fpdf.php')) {
+                require('../fpdf/fpdf.php');
             }
 
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment;filename="' . $filename . '.pdf"');
-            echo $pdf->Output('S');
+            if (class_exists('FPDF')) {
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 0);
+                $pdf->SetFillColor(200, 220, 255);
+                $pdf->SetTextColor(0);
+                $pdf->SetFont('helvetica', '', 7);
+                foreach ($tableData as $row) {
+                    foreach ($row as $col) {
+                        $pdf->Cell(22, 5, $col, 1, 0, 'C', true);
+                    }
+                    $pdf->Ln();
+                    $pdf->SetFillColor(255, 255, 255); 
+                }
+
+                header('Content-Type: application/pdf');
+                header('Content-Disposition: attachment;filename="' . $filename . '.pdf"');
+                echo $pdf->Output('S');
+            } else {
+                echo 'PDF library not found.';
+            }
             break;
 
         default:
@@ -150,12 +213,9 @@ if (isset($_GET['format'])) {
             break;
     }
 } else {
-    echo 'Error : Please specify a format in the GET request (e.g., ?format=pdf).';
+    echo 'Error : Please specify a format in the GET request (e.g., ?format=csv).';
 }
 
-
-
-// Function to output CSV data
 function outputCSV($data) {
     $output = fopen('php://output', 'w');
     foreach ($data as $row) {
@@ -163,5 +223,3 @@ function outputCSV($data) {
     }
     fclose($output);
 }
-
-exit();
