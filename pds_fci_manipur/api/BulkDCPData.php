@@ -1,4 +1,4 @@
-FCI<?php
+<?php
 require('../util/Connection.php');
 require('../structures/DCP.php');
 require('../util/SessionFunction.php');
@@ -47,8 +47,6 @@ if($numrows>0){
 
 
 function formatName($name) {
-	$name = preg_replace('/[^a-zA-Z0-9_ ]/', '', $name);
-    $name = ucwords(strtolower($name));
     return trim($name);
 }
 

@@ -13,9 +13,6 @@ if (!SessionCheck()) {
 require('Header.php');
 
 function formatName($name) {
-    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $name = preg_replace('/[^a-zA-Z0-9_ ]/', '', $name);
-    $name = ucwords(strtolower($name));
     return trim($name);
 }
 

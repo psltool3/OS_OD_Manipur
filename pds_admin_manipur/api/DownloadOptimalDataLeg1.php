@@ -46,9 +46,19 @@ if (isset($_GET['format'])) {
 	}
 
 	$tablename = "optimiseddata_leg1_".$id;
-	$query = "SELECT * FROM ".$tablename." WHERE 1";
-	if($district!="" and $district!="all"){
-		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district'";
+	$is_rollout = (isset($_GET['source']) && $_GET['source'] == 'rollout') || isset($_GET['month']);
+	if ($is_rollout) {
+		$approved_filter = "(approve_admin='yes' OR (new_id_admin IS NOT NULL AND new_id_admin<>'' AND new_id_admin<>'0'))";
+		if($district!="" and $district!="all"){
+			$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND ".$approved_filter;
+		} else {
+			$query = "SELECT * FROM ".$tablename." WHERE ".$approved_filter;
+		}
+	} else {
+		$query = "SELECT * FROM ".$tablename." WHERE 1";
+		if($district!="" and $district!="all"){
+			$query = "SELECT * FROM ".$tablename." WHERE to_district='$district'";
+		}
 	}
     $result = mysqli_query($con,$query);
     $numrows = $result ? mysqli_num_rows($result) : 0;
@@ -88,6 +98,11 @@ if (isset($_GET['format'])) {
 				$row["from_id"] = $row['new_id_district'];
 				$row["from_name"] = $row['new_name_district'];
 				$row["distance"] = $row['new_distance_district'];
+			}
+			if (empty($row['status']) || strtolower(trim($row['status'])) != 'implemented') {
+				$row['status'] = 'Not Implemented';
+			} else {
+				$row['status'] = 'Implemented';
 			}
             $temp = array();
 			$temp_pdf = array();

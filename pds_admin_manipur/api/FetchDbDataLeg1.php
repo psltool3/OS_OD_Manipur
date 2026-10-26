@@ -74,16 +74,16 @@ if ($reviewed == "reviewed") {
 
 if ($approved == "approved") {
     if($added==1){
-        $query .= " AND approve_admin='yes'";
+        $query .= " AND approve_admin='yes' AND (new_id_admin IS NULL OR new_id_admin='' OR new_id_admin='0')";
     }else{
-        $query .= " WHERE approve_admin='yes'";
+        $query .= " WHERE approve_admin='yes' AND (new_id_admin IS NULL OR new_id_admin='' OR new_id_admin='0')";
     }
 	$added = 1;
 } else if ($approved == "notapproved") {
     if($added==1){
-        $query .= " AND approve_admin IS NULL";
+        $query .= " AND (approve_admin IS NULL OR approve_admin='no' OR (new_id_admin IS NOT NULL AND new_id_admin<>'' AND new_id_admin<>'0'))";
     }else{
-        $query .= " WHERE approve_admin IS NULL";
+        $query .= " WHERE (approve_admin IS NULL OR approve_admin='no' OR (new_id_admin IS NOT NULL AND new_id_admin<>'' AND new_id_admin<>'0'))";
     }
 	$added = 1;
 }

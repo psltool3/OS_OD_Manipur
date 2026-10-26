@@ -1,0 +1,11 @@
+[2026-10-26 22:37:28] User -> Warehouse added ->admin@pds| Requested JSON -> {"name":"Akshat@#$$%%","type":"motorable","latitude":"11","storage":"87","district":"BISHNUPUR","id":"10001","warehousetype":"swc","longitude":"89"}
+[2026-10-26 22:56:42] User -> Warehouse Edit->admin@pds| Requested JSON -> {"name":"Akshat@#$","uniqueid":"WH_6adf88d0bb19","active":"1","type":"motorable","latitude":"11","storage":"87","district":"BISHNUPUR","id":"10001","warehousetype":"swc","longitude":"89"}
+[2026-10-26 22:57:09] User -> Warehouse Edit->admin@pds| Requested JSON -> {"name":"Akshat@#$","uniqueid":"WH_6adf88d0bb19","active":"1","type":"motorable","latitude":"11","storage":"87","district":"BISHNUPUR","id":"10001","warehousetype":"swc","longitude":"89"}
+[2026-10-26 23:01:50] User -> Warehouse Edit->admin@pds| Requested JSON -> {"name":"Akshat@#$()!&*","uniqueid":"WH_6adf88d0bb19","active":"1","type":"motorable","latitude":"11","storage":"87","district":"BISHNUPUR","id":"10001","warehousetype":"swc","longitude":"89"}
+[2026-10-26 23:11:13] User -> Warehouse Edit->admin@pds| Requested JSON -> {"name":"Akshat@#$()!&*","uniqueid":"WH_6adf88d0bb19","active":"1","type":"motorable","latitude":"11","storage":"0","district":"BISHNUPUR","id":"10001","warehousetype":"swc","longitude":"89"}
+[2026-10-26 23:12:57] User -> Warehouse deleted -> admin@pds| Requested JSON -> {"uid":"WH_6adf88d0bb19"} | Akshat@#$()!&*
+[2026-10-26 23:13:20] User -> Warehouse added ->admin@pds| Requested JSON -> {"name":"Akshay@#$()*","type":"motorable","latitude":"11","storage":"89","district":"BISHNUPUR","id":"1001","warehousetype":"swc","longitude":"89"}
+[2026-10-26 23:13:26] User -> Warehouse deleted -> admin@pds| Requested JSON -> {"uid":"WH_6adf91386f5f"} | Akshay@#$()*
+[2026-10-26 23:27:24] User -> Save Data | approve admin change yes ->admin@pds| FF12001 - 14608018
+[2026-10-26 23:42:02] Admin User -> Save Data | implemeneted ->admin@pds| FF12001 - 14608018
+[2026-10-26 23:42:35] User -> Save Data | approve district change id ->admin@pds| FF12001 - 14608339| FF12004

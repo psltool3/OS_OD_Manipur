@@ -13,8 +13,7 @@ if (!SessionCheck()) {
 require('Header.php');
 
 function formatName($name) {
-    $name = preg_replace('/[^a-zA-Z ]/', '', $name);
-    return trim(ucwords(strtolower($name)));
+    return trim($name);
 }
 
 function isValidCoordinate($value, $coordinateType) {

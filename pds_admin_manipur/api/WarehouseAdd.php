@@ -14,9 +14,6 @@ require('Header.php');
 
 // Sanitize and format the name
 function formatName($name) {
-    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $name = preg_replace('/[^a-zA-Z0-9_ ]/', '', $name); // Only allow alphanumeric, spaces, and underscores
-    $name = ucwords(strtolower($name)); // Convert to title case
     return trim($name);
 }
 

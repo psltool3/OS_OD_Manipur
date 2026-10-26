@@ -46,7 +46,7 @@ $query = "SHOW TABLES LIKE '$tablename'";
 $result = $con->query($query);
 
 if ($result && $result->num_rows > 0) {
-	$approved_filter = "approve_admin='yes'";
+	$approved_filter = "(approve_admin='yes' OR (new_id_admin IS NOT NULL AND new_id_admin<>'' AND new_id_admin<>'0'))";
 	if($district != "" && $district != "all"){
 		$query = "SELECT * FROM ".$tablename." WHERE to_district='$district' AND ".$approved_filter;
 	} else {

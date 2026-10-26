@@ -6,9 +6,13 @@ require('../util/SessionFunction.php');
 require('../structures/Login.php');
 require('../util/Logger.php');
 $storage_original = isset($_POST['storage']) ? $_POST['storage'] : null;
+$name_original = isset($_POST['name']) ? $_POST['name'] : null;
 require('../util/Security.php');
 if ($storage_original === '0' || $storage_original === 0) {
     $_POST['storage'] = '0';
+}
+if ($name_original !== null) {
+    $_POST['name'] = $name_original;
 }
 require ('../util/Encryption.php');
 $nonceValue = 'nonce_value';
@@ -20,9 +24,6 @@ if(!SessionCheck()){
 require('Header.php');
 
 function formatName($name) {
-    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $name = preg_replace('/[^a-zA-Z0-9_ ]/', '', $name);
-    $name = ucwords(strtolower($name));
     return trim($name);
 }
 

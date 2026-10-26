@@ -59,7 +59,7 @@ foreach ($_POST as $key => $value) {
 		$name = isset($row_name['name']) ? $row_name['name'] : '';
 		$reason = isset($_POST[$key."_idreason"]) ? $_POST[$key."_idreason"] : '';
 		$distance = isset($_POST[$key."_iddistance"]) ? $_POST[$key."_iddistance"] : '';
-		$query = "UPDATE " . $tablename . " SET new_id_admin='$value', new_name_admin='$name', approve_admin='yes', new_distance_admin='$distance', reason_admin='$reason' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
+		$query = "UPDATE " . $tablename . " SET new_id_admin='$value', new_name_admin='$name', approve_admin='no', new_distance_admin='$distance', reason_admin='$reason' WHERE from_id='$fromid' AND to_id='$toid' AND commodity='$commodity'";
 		writeLog("User ->" ." Save Data | approve district change id ->". $_SESSION['user'] . "| " . $fromid . " - " . $toid . "| " . $value);
 	}
 	mysqli_query($con,$query);

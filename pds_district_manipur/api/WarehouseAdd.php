@@ -14,8 +14,6 @@ require('Header.php');
 
 // Function to format names
 function formatName($name) {
-    $name = preg_replace('/[^a-zA-Z ]/', '', $name);
-    $name = ucwords(strtolower($name));
     return trim($name);
 }
 

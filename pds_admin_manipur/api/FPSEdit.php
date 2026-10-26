@@ -8,10 +8,12 @@ require('../util/Logger.php');
 $demand_original = isset($_POST['demand']) ? $_POST['demand'] : null;
 $demand_rice_original = isset($_POST['demand_rice']) ? $_POST['demand_rice'] : null;
 $demand_frice_original = isset($_POST['demand_frice']) ? $_POST['demand_frice'] : null;
+$name_original = isset($_POST['name']) ? $_POST['name'] : null;
 require('../util/Security.php');
 if ($demand_original === '0' || $demand_original === 0) { $_POST['demand'] = '0'; }
 if ($demand_rice_original === '0' || $demand_rice_original === 0) { $_POST['demand_rice'] = '0'; }
 if ($demand_frice_original === '0' || $demand_frice_original === 0) { $_POST['demand_frice'] = '0'; }
+if ($name_original !== null) { $_POST['name'] = $name_original; }
 require ('../util/Encryption.php');
 $nonceValue = 'nonce_value';
 
@@ -23,9 +25,7 @@ if (!SessionCheck()) {
 require('Header.php');
 
 function formatName($name) {
-    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $name = preg_replace('/[^a-zA-Z0-9_ ]/', '', $name);
-    return trim(ucwords(strtolower($name)));
+    return trim($name);
 }
 
 function isValidCoordinate($value, $coordinateType) {
