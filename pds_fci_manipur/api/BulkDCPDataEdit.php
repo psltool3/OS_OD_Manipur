@@ -52,7 +52,7 @@ $result = mysqli_query($con,$query);
 $numrows = mysqli_num_rows($result);
 if($numrows>0){
 	while($row=mysqli_fetch_assoc($result)){
-		array_push($districts,$row["name"]);
+		array_push($districts, strtoupper(trim($row["name"])));
 	}
 }
 
@@ -126,6 +126,11 @@ try{
 
 					if(!isStringNumber($column[$demand])){
 						echo "Error : Check Demand Value: ".$column[$demand];
+						echo "</br>";
+						$redirect = 0;
+					}	
+					if(!in_array(strtoupper(trim($column[$district])), $districts)){
+						echo "Error : Check District Name: ".$column[$district];
 						echo "</br>";
 						$redirect = 0;
 					}	

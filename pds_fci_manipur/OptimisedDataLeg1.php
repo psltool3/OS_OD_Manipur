@@ -278,7 +278,7 @@ if($currentTimestamp >= $targetTimestamp) {
 												<th style="font-size:16px">Reason for not Approve</th>
 												<th style="font-size:16px">Distance (Km)</th>
 												<th style="font-size:16px">Status</th>
-													<th style="font-size:16px">Action</th>								
+												<th style="font-size:16px">Action</th>								
                                             </tr>
                                         </thead>
 										<tbody id="table_body">

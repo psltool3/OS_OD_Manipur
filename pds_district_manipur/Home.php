@@ -513,7 +513,7 @@ if($currentTimestamp >= $targetTimestamp) {
 		document.getElementById('downloadCSV').addEventListener('click', async function() {
 			try {
 				
-				const csvResponse = await fetch('api/DownloadOptimalData.php?format=csv');
+				const csvResponse = await fetch('api/DownloadOptimisedData.php?format=csv');
 				const csvBlob = await csvResponse.blob();
 				downloadFile(csvBlob, 'Optimised_Planning_' + getDateString() + '.csv');
 			} catch (error) {
@@ -534,7 +534,7 @@ if($currentTimestamp >= $targetTimestamp) {
 		document.getElementById('downloadXLSX').addEventListener('click', async function() {
 			try {
 				
-				const excelResponse = await fetch('api/DownloadOptimalData.php?format=xlsx');
+				const excelResponse = await fetch('api/DownloadOptimisedData.php?format=xlsx');
 				const excelBlob = await excelResponse.blob();
 				downloadFile(excelBlob, 'Optimised_Planning_' + getDateString() + '.xlsx');
 			} catch (error) {
@@ -545,7 +545,7 @@ if($currentTimestamp >= $targetTimestamp) {
 		document.getElementById('downloadPDF').addEventListener('click', async function() {
 			try {
 				
-				const excelResponse = await fetch('api/DownloadOptimalData.php?format=pdf');
+				const excelResponse = await fetch('api/DownloadOptimisedData.php?format=pdf');
 				const excelBlob = await excelResponse.blob();
 				downloadFile(excelBlob, 'Optimised_Planning_' + getDateString() + '.pdf');
 			} catch (error) {

@@ -462,7 +462,7 @@ while($row = mysqli_fetch_array($result))
 			try {
 				var month = document.getElementById("month").value;
 				var district = document.getElementById("district").value;
-				const csvResponse = await fetch('api/DownloadOptimalData.php?format=csv&month=' + month + "&district=" + district);
+				const csvResponse = await fetch('api/DownloadOptimisedData.php?format=csv&month=' + month + "&district=" + district);
 				const csvBlob = await csvResponse.blob();
 				downloadFile(csvBlob, 'Optimise_Plan_Leg2_' + getDateString() + '.csv');
 			} catch (error) {
@@ -474,7 +474,7 @@ while($row = mysqli_fetch_array($result))
 			try {
 				var month = document.getElementById("month").value;
 				var district = document.getElementById("district").value;
-				const csvResponse = await fetch('api/DownloadOptimalData.php?format=pdf&month=' + month + "&district=" + district);
+				const csvResponse = await fetch('api/DownloadOptimisedData.php?format=pdf&month=' + month + "&district=" + district);
 				const csvBlob = await csvResponse.blob();
 				downloadFile(csvBlob, 'Optimise_Plan_Leg2_' + getDateString() + '.pdf');
 			} catch (error) {
@@ -496,7 +496,7 @@ while($row = mysqli_fetch_array($result))
 			try {
 				var month = document.getElementById("month").value;
 				var district = document.getElementById("district").value;
-				const excelResponse = await fetch('api/DownloadOptimalData.php?format=xlsx&month=' + month + "&district=" + district);
+				const excelResponse = await fetch('api/DownloadOptimisedData.php?format=xlsx&month=' + month + "&district=" + district);
 				const excelBlob = await excelResponse.blob();
 				downloadFile(excelBlob, 'Optimise_Plan_Leg2_' + getDateString() + '.xlsx');
 			} catch (error) {

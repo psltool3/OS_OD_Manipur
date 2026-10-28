@@ -56,8 +56,10 @@ require('Header.php');
                                                 <label class="col-md-3 control-label">Type*</label>
                                                 <div class="col-md-9">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon"><span class="fa fa-info"></span></span>
-                                                        <input type="text" class="form-control" id="type" name="type" required />
+                                                        <span class="input-group-addon"><span class="fa fa-arrow-down"></span></span>
+                                                        <select class="form-control" id="type" name="type" required>
+                                                            <option value="FCI">FCI</option>
+                                                        </select>
                                                     </div>
                                                     <span class="help-block">Type</span>
                                                 </div>

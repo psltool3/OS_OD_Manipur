@@ -78,7 +78,7 @@ else{
                 <!-- START BREADCRUMB -->
                 <ul class="breadcrumb">
                     <li><a href="#">Home</a></li>
-                    <li class="active">Warehouse Add</li>
+                    <li class="active">Warehouse Edit</li>
                 </ul>
                 <!-- END BREADCRUMB -->
 
@@ -92,7 +92,7 @@ else{
                             <form action="api/WarehouseEdit.php" method="POST" class="form-horizontal" enctype = "multipart/form-data">
                             <div class="panel panel-default">
                                <div class="panel-body">
-                                    <p>Fill this form to add new warehouse.</p>
+                                    <p>Fill this form to edit warehouse.</p>
                                 </div>
 
                              <div class="panel-body">
