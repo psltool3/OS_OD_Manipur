@@ -3,9 +3,9 @@ require('util/Connection.php');
 require('util/SessionCheck.php');
 require('Header.php');
 
-$id = isset($_POST['id']) ? $_POST['id'] : '';
+$id = isset($_POST['id']) && !empty($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) && !empty($_GET['id']) ? $_GET['id'] : '');
 if (empty($id)) {
-	$res_latest = mysqli_query($con, "SELECT id FROM optimised_table_leg1 ORDER BY id DESC LIMIT 1");
+	$res_latest = mysqli_query($con, "SELECT id FROM optimised_table_leg1 ORDER BY last_updated DESC LIMIT 1");
 	if ($res_latest && mysqli_num_rows($res_latest) > 0) {
 		$row_latest = mysqli_fetch_assoc($res_latest);
 		$id = (string)$row_latest['id'];
@@ -57,11 +57,10 @@ $tablename = "fci_leg1_".$id;
 												<th style="font-size:15px">District</th>
 												<th style="font-size:15px">Name of FCI Warehouse</th>
 												<th style="font-size:15px">FCI ID</th> 
-												<th style="font-size:15px">Motorable/Non-Motorable</th>
 												<th style="font-size:15px">Warehouse Type</th>
 												<th style="font-size:15px">Latitude</th>
 												<th style="font-size:15px">Longitude</th>
-												<th style="font-size:15px">Storage (Qtl)</th>
+												<th style="font-size:15px">Demand (Qtl)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -75,20 +74,18 @@ $tablename = "fci_leg1_".$id;
 													$district = isset($row['district']) ? $row['district'] : '';
 													$name = isset($row['name']) ? $row['name'] : '';
 													$id_val = isset($row['id']) ? $row['id'] : '';
-													$type = isset($row['type']) ? $row['type'] : '';
-													$warehousetype = isset($row['warehousetype']) ? $row['warehousetype'] : '';
+													$type = isset($row['type']) && $row['type'] !== '' ? $row['type'] : (isset($row['warehousetype']) ? $row['warehousetype'] : '');
 													$lat = isset($row['latitude']) ? $row['latitude'] : '';
 													$lng = isset($row['longitude']) ? $row['longitude'] : '';
-													$storage = isset($row['storage']) ? $row['storage'] : (isset($row['capacity']) ? $row['capacity'] : '');
+													$demand = isset($row['demand']) && $row['demand'] !== '' ? $row['demand'] : (isset($row['storage']) && $row['storage'] !== '' ? $row['storage'] : (isset($row['capacity']) ? $row['capacity'] : ''));
 													
 													echo "<tr><td>{$district}</td>".
 													"<td>{$name}</td>".
 													"<td>{$id_val}</td>".
 													"<td>{$type}</td>".
-													"<td>{$warehousetype}</td>".
 													"<td>{$lat}</td>".
 													"<td>{$lng}</td>".
-													"<td>{$storage}</td></tr>";
+													"<td>{$demand}</td></tr>";
 												}
 											}
 										}

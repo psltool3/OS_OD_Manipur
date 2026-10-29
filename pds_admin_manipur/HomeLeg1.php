@@ -608,14 +608,7 @@ require('util/Logger.php');
 								<center style="margin-top:20px">
 									<h4><b id="result"></b></h4>
 								</center>
-								<div id="districtcheckbox" style="display:none">
-									<center style="margin-top:20px;">
-										<h4><b><span style="color: white;">District-wise Supply and Demand &nbsp <input type="checkbox" id="districtwiseCheckbox" onchange="handleDistrictCheckboxChange()" /></b></h4>
-									</center>
-									<center style="margin-top:20px">
-										<h4><b id="resultdistrict"></b></h4>
-									</center>
-								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -968,11 +961,9 @@ function formatNumberWithCommas(value) {
 						});
 					}*/
 					applicableLength = Math.max(applicableLength,1);
-					document.getElementById("districtcheckbox").style.display = "none";
 					document.getElementById("result").innerHTML = "";
 					document.getElementById("totalFciDemand").innerHTML = "";
 					document.getElementById("totalFciSupply").innerHTML = "";
-					document.getElementById("districtwiseCheckbox").checked = false;
 					document.getElementById("statewiseCheckbox").checked = false;
 					document.getElementById("generateoptinizedplanbutton").style.display = "none";
 
@@ -1030,24 +1021,6 @@ function formatNumberWithCommas(value) {
 	}
 	
 	function handleDistrictCheckboxChange() {
-		var checkbox = document.getElementById("districtwiseCheckbox");
-		if (checkbox.checked) {
-			document.getElementById("generateoptinizedplanbutton").style.display = "";
-			if (district_names["District_Name_All"].length > 0) {
-				var concatenatedNames = district_names["District_Name_All"].join(', ');
-				document.getElementById("resultdistrict").innerHTML = "Intra district movement is infeasble- " + concatenatedNames;
-				document.getElementById("resultdistrict").style.color = "#ADFF2F"; 
-			} else {
-				document.getElementById("resultdistrict").innerHTML = "Intra scenario in every district is feasible";
-				document.getElementById("resultdistrict").style.color = "#1111BB";
-			}
-			// Increase font size and make text bold
-			document.getElementById("resultdistrict").style.fontSize = "18px";
-			document.getElementById("resultdistrict").style.fontWeight = "bold";
-		} else {
-			document.getElementById("resultdistrict").innerHTML = "";
-			document.getElementById("generateoptinizedplanbutton").style.display = "none";
-		}
 	}
 	
 	let controller;
@@ -1230,7 +1203,6 @@ function capitalizeFirstLetter(string) {
 
 function handleStateCheckboxChange() {
 	var checkbox = document.getElementById("statewiseCheckbox");
-	document.getElementById("districtwiseCheckbox").checked = false;
 	
 	if (checkbox.checked) {
 		const formData = new FormData();
@@ -1261,13 +1233,12 @@ function handleStateCheckboxChange() {
 						// document.getElementById("result").innerHTML = "Optimisation can be done.";
 						document.getElementById("result").innerHTML = "<span style='font-weight: bold; font-size: 20px; color: green;'>Optimisation can be done.</span>";
 
-						document.getElementById("districtcheckbox").style.display = "block";
+						document.getElementById("generateoptinizedplanbutton").style.display = "";
 					}
 					else {
 						// document.getElementById("result").innerHTML = "Optimiazation cannot be done infeasible solution";
 						document.getElementById("result").innerHTML = "<span style='font-weight: bold; font-size: 20px; color: red;'>Optimiazation cannot be done infeasible solution.</span>";
 
-						document.getElementById("districtcheckbox").style.display = "none";
 						document.getElementById("generateoptinizedplanbutton").style.display = "none";
 					}
 
@@ -1304,15 +1275,12 @@ function handleStateCheckboxChange() {
 					myChart.update();
 					document.getElementById("processingPopup").style.display = "none";
 					if(firstStart==0){
-						document.getElementById("districtwiseCheckbox").checked = true;
-						handleDistrictCheckboxChange();
 						firstStart = 1;
 					}
 				}
 				else {
 					document.getElementById("result").innerHTML = "Optimisation cannot be provided.";
 					document.getElementById("result").style.color = "red";
-					document.getElementById("districtcheckbox").style.display = "none";
 					document.getElementById("processingPopup").style.display = "none";
 					document.getElementById("generateoptinizedplanbutton").style.display = "none";
 				}
@@ -1328,8 +1296,6 @@ function handleStateCheckboxChange() {
 		document.getElementById("result").innerHTML = "";
 		document.getElementById("totalFciDemand").innerHTML = "";
 		document.getElementById("totalFciSupply").innerHTML = "";
-		document.getElementById("districtwiseCheckbox").checked = false;
-		document.getElementById("districtcheckbox").style.display = "none";
 		document.getElementById("processingPopup").style.display = "none";
 		document.getElementById("generateoptinizedplanbutton").style.display = "none";
 	}

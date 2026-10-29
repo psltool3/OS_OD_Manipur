@@ -10,10 +10,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 if (isset($_GET['format'])) {
     $format = $_GET['format'];
     
-    $columns = ["district","name","id","warehousetype","type","latitude","longitude","storage"];
+    $headers = ["District", "Name of FCI Warehouse", "FCI ID", "Warehouse Type", "Latitude", "Longitude", "Demand (Qtl)"];
     $tablename = isset($_GET['tableName']) ? $_GET['tableName'] : '';
     if (empty($tablename) || $tablename == 'fci_leg1_') {
-        $res_m = mysqli_query($con, "SELECT id FROM optimised_table_leg1 ORDER BY id DESC LIMIT 1");
+        $res_m = mysqli_query($con, "SELECT id FROM optimised_table_leg1 ORDER BY last_updated DESC LIMIT 1");
         if ($res_m && mysqli_num_rows($res_m) > 0) {
             $row_m = mysqli_fetch_assoc($res_m);
             $tablename = "fci_leg1_".$row_m['id'];
@@ -21,7 +21,7 @@ if (isset($_GET['format'])) {
     }
 	
 	$tableData = array();
-    array_push($tableData, $columns);
+    array_push($tableData, $headers);
 
 	$query = "SELECT * FROM ".$tablename." WHERE 1";
     $result = mysqli_query($con, $query);
@@ -29,12 +29,15 @@ if (isset($_GET['format'])) {
         $numrows = mysqli_num_rows($result);
         if($numrows > 0){
             while($row = mysqli_fetch_array($result)){
-                $temp = array();
-                for($i = 0; $i < count($columns); $i++){
-                    $colName = $columns[$i];
-                    $val = isset($row[$colName]) ? $row[$colName] : (isset($row['capacity']) && $colName == 'storage' ? $row['capacity'] : '');
-                    array_push($temp, $val);
-                }
+                $district = isset($row['district']) ? $row['district'] : '';
+                $name = isset($row['name']) ? $row['name'] : '';
+                $id_val = isset($row['id']) ? $row['id'] : '';
+                $type = isset($row['type']) && $row['type'] !== '' ? $row['type'] : (isset($row['warehousetype']) ? $row['warehousetype'] : '');
+                $lat = isset($row['latitude']) ? $row['latitude'] : '';
+                $lng = isset($row['longitude']) ? $row['longitude'] : '';
+                $demand = isset($row['demand']) && $row['demand'] !== '' ? $row['demand'] : (isset($row['storage']) && $row['storage'] !== '' ? $row['storage'] : (isset($row['capacity']) ? $row['capacity'] : ''));
+
+                $temp = [$district, $name, $id_val, $type, $lat, $lng, $demand];
                 array_push($tableData, $temp);
             }
         }
@@ -56,14 +59,7 @@ if (isset($_GET['format'])) {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
 
-            // Set column names as the first row
-            $columnIndex = 1;
-            foreach ($columns as $columnName) {
-                $sheet->setCellValueByColumnAndRow($columnIndex, 1, $columnName);
-                $columnIndex++;
-            }
-
-            // Insert data tableData
+            // Insert data tableData (includes headers at row 1)
             $rowIndex = 1;
             foreach ($tableData as $rowData) {
                 $columnIndex = 1;

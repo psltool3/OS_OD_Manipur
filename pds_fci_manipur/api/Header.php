@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-		<title>PDS Admin</title>
+		<title>FCI - Manipur</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -83,7 +83,7 @@
             <!-- START X-NAVIGATION -->
 			<ul class="x-navigation">
 				<li class="xn-logo">
-					<span style="font-size: 19px; text-align: center; margin: 10px;color:#fff">Manipur State Level</span>
+					<span style="font-size: 19px; text-align: center; margin: 10px;color:#fff">FCI Dashboard</span>
 					<a href="#" class="x-navigation-control"></a>
 				</li>
 				<li class="xn-profile">
@@ -99,16 +99,16 @@
 					</div>
 				</li>
 				<li>
-					<a style="background-color:#FFC167"><center><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">Step 2</span></center></a>
-				</li>
-				<li>
-					<a href="Logout.php" style="padding-left:0px"><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">Logout</span></a>
-				</li>
-				<li>
 					<a style="background-color:#FFC167"><center><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">Edit PDS Details</span></center></a>
 				</li>
 				<li>
 					<a href="../DCP.php" style="padding-left:0px"><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">Edit FCI</span></a>
+				</li>
+				<li>
+					<a href="../OptimisedDataLeg1.php" style="padding-left:0px"><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">OptimisedPlan Leg1</span></a>
+				</li>
+				<li style="margin-bottom: 30px;">
+					<a href="Logout.php" style="padding-left:0px"><span class="xn-text" style="font-family:sans-serif;font-weight:italic;font-size:16px;">Logout</span></a>
 				</li>
 			</ul>
 				<!-- END X-NAVIGATION -->

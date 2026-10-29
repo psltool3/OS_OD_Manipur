@@ -166,7 +166,7 @@ try{
 					$DCP->setLatitude($column[$latitude]);
 					$DCP->setLongitude($column[$longitude]);
 					$DCP->setName($column[$name]);
-					$DCP->setId((int)$column[$id]);
+					$DCP->setId(trim($column[$id]));
 					$DCP->setType($column[$type]);
 					$DCP->setDemand($column[$demand]);
 					$DCP->setActive($column[$active]);
@@ -174,7 +174,7 @@ try{
 					$query_result = mysqli_query($con, $query_check);
 					$numrows = mysqli_num_rows($query_result);
 					if($numrows==0){
-						echo "Error : Error in loading data as DCP id doesn't exist : ".(int)$column[$id];
+						echo "Error : Error in loading data as DCP id doesn't exist : ".$column[$id];
 						echo "</br>";
 						$redirect = 0;
 					}
@@ -233,14 +233,14 @@ try{
 			
 			$file = fopen($fileName, "r");
 			$i = 0;
-			$district = 0;
-			$name = 1;
-			$id = 2;
-			$type = 3;
-			$demand = 6;
-			$longitude = 5;
-			$latitude = 4;
-			$active = 8;
+			$district = -1;
+			$name = -1;
+			$id = -1;
+			$type = -1;
+			$demand = -1;
+			$longitude = -1;
+			$latitude = -1;
+			$active = -1;
 			while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
 				if($i>0){
 					$DCP = new DCP;
@@ -258,7 +258,7 @@ try{
 					$DCP->setLatitude($column[$latitude]);
 					$DCP->setLongitude($column[$longitude]);
 					$DCP->setName($column[$name]);
-					$DCP->setId($column[$id]);
+					$DCP->setId(trim($column[$id]));
 					$DCP->setType($column[$type]);
 					$DCP->setDemand($column[$demand]);
 					$DCP->setActive($column[$active]);

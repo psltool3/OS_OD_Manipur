@@ -61,7 +61,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <!-- START X-NAVIGATION -->
 			<ul class="x-navigation">
 				<li class="xn-logo">
-					<span style="font-size: 19px; text-align: center; margin: 10px;color:#fff">Manipur State Level</span>
+					<span style="font-size: 19px; text-align: center; margin: 10px;color:#fff">FCI Dashboard</span>
 					<a href="#" class="x-navigation-control"></a>
 				</li>
 				<li class="xn-profile">

@@ -400,7 +400,7 @@ function formatNumberWithCommas(value) {
 		}
 		
 		if(district=="all"){
-			district = "";
+			$('#table_body').empty();
 		}
 		
 		//var dataString = 'approved='+ approved + '&reviewed='+ reviewed + '&month='+ month;
@@ -430,14 +430,16 @@ function formatNumberWithCommas(value) {
 						var resultarray = JSON.parse(result);
 						var obj = resultarray["data"];
 						
-						for (var dataField in obj) {
-							var status = "Not Implemented";
-							if(obj[dataField]["status"]=="implemented"){
-								status = "Implemented"
+						if(district !== "all"){
+							for (var dataField in obj) {
+								var status = "Not Implemented";
+								if(obj[dataField]["status"]=="implemented"){
+									status = "Implemented"
+								}
+								
+								var subpart1 = "<tr><td>" +  obj[dataField]["scenario"] +  "</td><td>"  + obj[dataField]["from"] +  "</td><td>"  + obj[dataField]["from_state"] +  "</td><td>"  + obj[dataField]["from_id"] +  "</td><td>"  + obj[dataField]["from_name"] +  "</td><td>"  + obj[dataField]["from_district"] +  "</td><td>"  + obj[dataField]["from_lat"] +  "</td><td>"  + obj[dataField]["from_long"] +  "</td><td>"  + obj[dataField]["to"] +  "</td><td>"  + obj[dataField]["to_state"] +  "</td><td>"  + obj[dataField]["to_id"] +  "</td><td>"  + obj[dataField]["to_name"] +  "</td><td>"  + obj[dataField]["to_district"] +  "</td><td>"  + obj[dataField]["to_lat"] +  "</td><td>"  + obj[dataField]["to_long"] +  "</td><td>"  + obj[dataField]["commodity"] +  "</td><td>"  + obj[dataField]["quantity"] +  "</td><td>"  + obj[dataField]["distance"] +  "</td><td>"  + status + "</td></tr>";
+								$('#table_body').append(subpart1);
 							}
-							
-							var subpart1 = "<tr><td>" +  obj[dataField]["scenario"] +  "</td><td>"  + obj[dataField]["from"] +  "</td><td>"  + obj[dataField]["from_state"] +  "</td><td>"  + obj[dataField]["from_id"] +  "</td><td>"  + obj[dataField]["from_name"] +  "</td><td>"  + obj[dataField]["from_district"] +  "</td><td>"  + obj[dataField]["from_lat"] +  "</td><td>"  + obj[dataField]["from_long"] +  "</td><td>"  + obj[dataField]["to"] +  "</td><td>"  + obj[dataField]["to_state"] +  "</td><td>"  + obj[dataField]["to_id"] +  "</td><td>"  + obj[dataField]["to_name"] +  "</td><td>"  + obj[dataField]["to_district"] +  "</td><td>"  + obj[dataField]["to_lat"] +  "</td><td>"  + obj[dataField]["to_long"] +  "</td><td>"  + obj[dataField]["commodity"] +  "</td><td>"  + obj[dataField]["quantity"] +  "</td><td>"  + obj[dataField]["distance"] +  "</td><td>"  + status + "</td></tr>";
-							$('#table_body').append(subpart1);
 						}
 						
 						var obj = resultarray["table"];

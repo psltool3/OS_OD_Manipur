@@ -412,8 +412,21 @@ require('Header.php');
 		var district = document.getElementById("district").value;
 		var month = document.getElementById("month").value;
 		
+		if(district==""){
+			var dropdown = document.getElementById("district");
+			for (var i = 0; i < dropdown.options.length; i++) {
+				var option = dropdown.options[i];
+				if (option.value.trim() !== "" && option.value.trim().toLowerCase() !== "all") {
+					dropdown.selectedIndex = i;
+					district = option.value;
+					break;
+				}
+			}
+		}
+
 		if(district=="all"){
-			district = "";
+			$('#table_body').empty();
+			uniqueid_bool_array = [];
 		}
 		
 		//var dataString = 'approved='+ approved + '&reviewed='+ reviewed + '&month='+ month;
@@ -441,22 +454,25 @@ require('Header.php');
 					try{
 						var resultarray = JSON.parse(result);
 						var obj = resultarray["data"];
+						uniqueid_bool_array = [];
 						
-						for (var dataField in obj) {
-							var uniqueid = obj[dataField]["from_id"] + "_" + obj[dataField]["to_id"] + "_" + obj[dataField]["commodity"];
-							
-							var status = obj[dataField]["status"];
-							var status_part = "";
-							if(status==null || status==""){
-								status_part = "<button class='btn btn-info' id=\"" + uniqueid + "\" onClick='markReview(\"" + uniqueid + "\")'>Mark as Implemented</button>"; 
-								uniqueid_bool_array.push(uniqueid);
+						if (district !== "all") {
+							for (var dataField in obj) {
+								var uniqueid = obj[dataField]["from_id"] + "_" + obj[dataField]["to_id"] + "_" + obj[dataField]["commodity"];
+								
+								var status = obj[dataField]["status"];
+								var status_part = "";
+								if(status==null || status==""){
+									status_part = "<button class='btn btn-info' id=\"" + uniqueid + "\" onClick='markReview(\"" + uniqueid + "\")'>Mark as Implemented</button>"; 
+									uniqueid_bool_array.push(uniqueid);
+								}
+								else if(status=="implemented"){
+									status_part = "Already Implemented";
+								}
+								
+								var subpart1 = "<tr><td>" +  obj[dataField]["scenario"] +  "</td><td>"  + obj[dataField]["from"] +  "</td><td>"  + obj[dataField]["from_state"] +  "</td><td>"  + obj[dataField]["from_id"] +  "</td><td>"  + obj[dataField]["from_name"] +  "</td><td>"  + obj[dataField]["from_district"] +  "</td><td>"  + obj[dataField]["from_lat"] +  "</td><td>"  + obj[dataField]["from_long"] +  "</td><td>"  + obj[dataField]["to"] +  "</td><td>"  + obj[dataField]["to_state"] +  "</td><td>"  + obj[dataField]["to_id"] +  "</td><td>"  + obj[dataField]["to_name"] +  "</td><td>"  + obj[dataField]["to_district"] +  "</td><td>"  + obj[dataField]["to_lat"] +  "</td><td>"  + obj[dataField]["to_long"] +  "</td><td>"  + obj[dataField]["commodity"] +  "</td><td>"  + obj[dataField]["quantity"] +  "</td><td>"  + obj[dataField]["distance"] +  "</td><td>"  + status_part + "</td></tr>";
+								$('#table_body').append(subpart1);
 							}
-							else if(status=="implemented"){
-								status_part = "Already Implemented";
-							}
-							
-							var subpart1 = "<tr><td>" +  obj[dataField]["scenario"] +  "</td><td>"  + obj[dataField]["from"] +  "</td><td>"  + obj[dataField]["from_state"] +  "</td><td>"  + obj[dataField]["from_id"] +  "</td><td>"  + obj[dataField]["from_name"] +  "</td><td>"  + obj[dataField]["from_district"] +  "</td><td>"  + obj[dataField]["from_lat"] +  "</td><td>"  + obj[dataField]["from_long"] +  "</td><td>"  + obj[dataField]["to"] +  "</td><td>"  + obj[dataField]["to_state"] +  "</td><td>"  + obj[dataField]["to_id"] +  "</td><td>"  + obj[dataField]["to_name"] +  "</td><td>"  + obj[dataField]["to_district"] +  "</td><td>"  + obj[dataField]["to_lat"] +  "</td><td>"  + obj[dataField]["to_long"] +  "</td><td>"  + obj[dataField]["commodity"] +  "</td><td>"  + obj[dataField]["quantity"] +  "</td><td>"  + obj[dataField]["distance"] +  "</td><td>"  + status_part + "</td></tr>";
-							$('#table_body').append(subpart1);
 						}
 						
 						var obj = resultarray["table"];
